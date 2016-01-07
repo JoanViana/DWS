@@ -1,0 +1,105 @@
+index:
+    path:     /index
+    defaults: { _controller: DWSBundle:Default:index }
+
+pro_create_def:
+    path:     /product/create
+    defaults: { _controller: DWSBundle:Product:createStatic }
+    
+pro_create_par:
+    path:     /product/create/{name}/{price}
+    defaults: { _controller: DWSBundle:Product:createParam }
+    requirements:
+        name: \w+
+        price:  \d{2}|\d{2}.\d{2} 
+
+pro_show:
+    path:     /product/show/{id}
+    defaults: { _controller: DWSBundle:Product:show }
+    requirements:
+        id:  \d+    
+            
+pro_list:
+    path:     /product/list
+    defaults: { _controller: DWSBundle:Product:list }
+    
+pro_list_bycat:
+    path:     /product/list/category/{category}
+    defaults: { _controller: DWSBundle:Product:listByCategory }
+    
+pro_list_allbycat:
+    path:     /product/list/category
+    defaults: { _controller: DWSBundle:Product:listAllByCategory }
+
+pro_delete:
+    path:     /product/delete/{id}
+    defaults: { _controller: DWSBundle:Product:delete }
+    requirements:
+        id:  \d+  
+
+pro_new:
+    path:     /product/new
+    defaults: { _controller: DWSBundle:Product:newProduct }
+    methods:  [GET|POST]
+    
+    
+
+        
+cat_create:
+    path:     /category/create/{name}
+    defaults: { _controller: DWSBundle:Category:create }
+    requirements:
+        name:  \w+
+        
+cat_create_def:
+    path:     /category/create
+    defaults: { _controller: DWSBundle:Category:createStatic }
+    
+cat_show:
+    path:     /category/show/{id}
+    defaults: { _controller: DWSBundle:Category:show }
+    requirements:
+        id:  \d+ 
+        
+cat_list:
+    path:     /category/list
+    defaults: { _controller: DWSBundle:Category:list }
+
+cat_delete:
+    path:     /category/delete/{id}
+    defaults: { _controller: DWSBundle:Category:delete }
+    requirements:
+        id:  \d+  
+        
+cat_new:
+    path:     /category/new
+    defaults: { _controller: DWSBundle:Category:newCategory }
+    methods:  [GET|POST]
+    
+    
+    
+    
+per_create_def:
+    path:     /person/create
+    defaults: { _controller: DWSBundle:Person:createStatic }
+    
+per_show:
+    path:     /person/show/{id}
+    defaults: { _controller: DWSBundle:Person:show }
+    requirements:
+        id:  \d+  
+        
+per_list:
+    path:     /person/list
+    defaults: { _controller: DWSBundle:Person:list }
+
+per_delete:
+    path:     /person/delete/{id}
+    defaults: { _controller: DWSBundle:Person:delete }
+    requirements:
+        id:  \d+ 
+        
+per_new:
+    path:     /person/new
+    defaults: { _controller: DWSBundle:Person:new }
+    methods:  [GET|POST]

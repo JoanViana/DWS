@@ -1,0 +1,96 @@
+{#<h2 class="padding-none">Person {{person.name}} (id: {{person.id}})</h2>#}
+{% extends 'DWSBundle::layout.html.twig' %}
+
+{% block body %}
+    {{ parent() }}
+	<div class="container">
+		<div class="col-md-12">
+			<div class="page-header margin-none">
+				<h2 class="padding-none">Person {{person.name}} (id: {{person.id}})</h2>
+			</div>
+			<div class="table-responsive">
+				<table class="table table-striped table-hover">
+					<thead>
+						<tr>
+							<th>Id</th>
+                            <th>Name</th>
+                            <th>Age</th>
+                            <th>Birthdate</th>
+                            <th>Height</th>
+                            <th>Email</th>
+                            <th>Phone</th>
+                            <th>Gender</th>
+                            <th>Descends</th>
+                            <th>Vehicle</th>
+                            <th>Language</th>
+                            <th>English</th>
+                            <th>Website</th>
+                            <th>Card</th>
+                            <th>IBAN</th>
+						</tr>
+					</thead>
+					<tbody>
+
+                            <tr>
+								<td> {{ person.id }} </td> 
+	                            <td> {{ person.name }} </td> 
+	                            <td> {{ person.age }} </td> 
+	                            <td> {{ person.birthDate|date('d-m-Y') }} </td> 
+	                            <td> {{ person.height }} </td> 
+	                            <td> {{ person.email }} </td> 
+	                            <td> {{ person.phone }} </td> 
+	                            <td> {{ person.gender }} </td> 
+	                            <td> {{ person.descends }} </td>
+	                            <td>
+                                    {% if person.vehicle %}
+                                    	Yes
+                                    {% else %}
+                                        No
+                                    {% endif %}
+                                </td> 
+	                            <td> {{ person.preferredLanguage }} </td> 
+                                <td> {% if person.englishLevel == 1 %}
+                                        	A1
+                                     {% elseif person.englishLevel == 2 %}
+                                        	A2
+                                     {% elseif person.englishLevel == 3 %}
+                                     	 	B1
+                                     {% elseif person.englishLevel == 4 %}
+                                        	B2
+                                     {% elseif person.englishLevel == 5 %}
+                                     	 	C1
+                                     {% elseif person.englishLevel == 6 %}
+                                        	C2
+                                     {% else %}
+                                        	None
+									 {% endif %}
+                                </td>
+	                            <td> {{ person.personalWebsite }} </td> 
+	                            <td> {{ person.cardNumber }} </td> 
+	                            <td> {{ person.IBAN }} </td> 
+                                <td class="actions">
+                                	{#
+			                        <a href="{{ path('per_list', {'id': person.id}) }}" class="btn btn-sm btn-info">
+			                            list all
+			                        </a>
+			                        
+			                        <a href="{{ path('per_edit', {'id': person.id}, {'person': person, 'action': null}) }}" class="btn btn-sm btn-primary">
+			                            edit
+			                        </a>
+			                        #}
+			                        <a href="{{ path('per_delete', {'id': person.id}) }}" class="btn btn-sm btn-danger btn-delete">
+			                            delete
+			                        </a>
+				                </td>
+                            </tr>                        
+					</tbody>
+				</table>
+			</div>
+		</div>
+		<div class="row">
+			<div class="text-center"> 
+					<a href="{{ path('per_list') }}"><button class="btn btn-primary btn-lg">List all</button></a>
+			</div>
+		</div>
+	</div>
+{% endblock %}

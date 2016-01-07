@@ -1,0 +1,48 @@
+{% extends 'DWSBundle::layout.html.twig' %}
+
+{% block body %}
+    {{ parent() }}
+	<div class="container">
+		<div class="col-md-12">
+			<div class="page-header margin-none">
+				<h2 class="padding-none">Category {{category.name}} (id: {{category.id}})</h2>
+			</div>
+			<div class="table-responsive">
+				<table class="table table-striped table-hover">
+					<thead>
+						<tr>
+							<th>Id</th>
+                            <th>Name</th>
+						</tr>
+					</thead>
+					<tbody>
+
+                            <tr>
+								<td> {{ category.id }} </td> 
+	                            <td> {{ category.name }} </td> 	                            
+                                <td class="actions">
+                                	{#
+			                        <a href="{{ path('cat_list', {'id': category.id}) }}" class="btn btn-sm btn-info">
+			                            list all
+			                        </a>
+			                        
+			                        <a href="{{ path('cat_edit', {'id': category.id}) }}" class="btn btn-sm btn-primary">
+			                            edit
+			                        </a>
+			                        #}
+			                        <a href="{{ path('cat_delete', {'id': category.id}) }}" class="btn btn-sm btn-danger btn-delete">
+			                            delete
+			                        </a>
+				                </td>
+                            </tr>                        
+					</tbody>
+				</table>
+			</div>
+		</div>
+		<div class="row">
+			<div class="text-center"> 
+					<a href="{{ path('cat_list') }}"><button class="btn btn-primary btn-lg">List all</button></a>
+			</div>
+		</div>
+	</div>
+{% endblock %}
