@@ -11,7 +11,7 @@ class CategoryController extends Controller
 {
 	public static $id_default = 1;
 	public static $name_default = "Alimentacion";
-	
+	/*
 	private function initCategory(){
 		
 		$category = $this->getDoctrine()
@@ -26,14 +26,11 @@ class CategoryController extends Controller
 			$errors = $validator->validate($category);
 			
 			if (count($errors) > 0) {
-				/*
-				 * Uses a __toString method on the $errors variable which is a
-				 * ConstraintViolationList object. This gives us a nice string
-				 * for debugging.
-				 */
+
 				$errorsString = (string) $errors;
 			
-				return new Response($errorsString);
+				return $this->render("DWSBundle::index.html.twig", array("text" => $errorsString));
+
 			}
 				
 				
@@ -43,6 +40,7 @@ class CategoryController extends Controller
 		
 		return $category;
 	}
+	*/
 	
 	public function createStaticAction()
 	{
@@ -53,14 +51,11 @@ class CategoryController extends Controller
 		$errors = $validator->validate($category);
 		 
 		if (count($errors) > 0) {
-			/*
-			 * Uses a __toString method on the $errors variable which is a
-			 * ConstraintViolationList object. This gives us a nice string
-			 * for debugging.
-			 */
+
 			$errorsString = (string) $errors;
 			 
-			return new Response($errorsString);
+			return $this->render("DWSBundle::index.html.twig", array("text" => $errorsString));
+
 		}
 	
 		 
@@ -93,7 +88,8 @@ class CategoryController extends Controller
     		 */
     		$errorsString = (string) $errors;
     	
-    		return new Response($errorsString);
+    		return $this->render("DWSBundle::index.html.twig", array("text" => $errorsString));
+
     	}
     	 
     	

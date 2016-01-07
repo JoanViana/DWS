@@ -11,7 +11,7 @@ use \DateTime;
 class PersonController extends Controller
 {
 	public static $id_default = 1;
-	public static $name_default = "Joan";
+	public static $name_default = "Joan Dídac Viana Fons";
 	public static $age_default = 27;
 	public static $birthDate_default = "1988-07-30";
 	public static $height_default = 175;
@@ -25,12 +25,13 @@ class PersonController extends Controller
 	public static $personalWebSite_default = "http://www.joanviana.hol.es";
 	public static $cardNumber_default = "5555555555554444";
 	public static $iban_default = "ES9121000418450200051332";
-	
+	/*
 	private function initPerson(){
 		
-		$person = $this->getDoctrine()
-			->getRepository("DWSBundle:Person")
-			->find(CategoryController::$id_default);
+		$repository = $this->getDoctrine()
+		->getRepository("DWSBundle:Person");
+		
+		$person= $repository->findOneByName(self::$name_default);
 		
 		if(!$person){
 			$person = new Person();
@@ -55,14 +56,11 @@ class PersonController extends Controller
 			$errors = $validator->validate($person);
 			
 			if (count($errors) > 0) {
-				/*
-				 * Uses a __toString method on the $errors variable which is a
-				 * ConstraintViolationList object. This gives us a nice string
-				 * for debugging.
-				 */
+
 				$errorsString = (string) $errors;
 			
-				return new Response($errorsString);
+				return $this->render("DWSBundle::index.html.twig", array("text" => $errorsString));
+
 			}
 			
 			 
@@ -71,6 +69,7 @@ class PersonController extends Controller
 		
 		return $person;
 	}
+	*/
 	
 	public function createStaticAction()
 	{
@@ -95,14 +94,11 @@ class PersonController extends Controller
 		$errors = $validator->validate($person);
 		
 		if (count($errors) > 0) {
-			/*
-			 * Uses a __toString method on the $errors variable which is a
-			 * ConstraintViolationList object. This gives us a nice string
-			 * for debugging.
-			 */
+
 			$errorsString = (string) $errors;
 		
-			return new Response($errorsString);
+			return $this->render("DWSBundle::index.html.twig", array("text" => $errorsString));
+
 		}
 		
 		 

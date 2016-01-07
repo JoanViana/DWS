@@ -16,11 +16,12 @@ class ProductController extends Controller
 	public static $description_default = "Barra de pan de pueblo cocida a leña de 250 gr";
 	
 	private function initCategory(){
+	
+		$repository = $this->getDoctrine()
+		->getRepository("DWSBundle:Category");
 		
-		$category = $this->getDoctrine()
-			->getRepository("DWSBundle:Category")
-			->find(CategoryController::$id_default);
-		
+		$category = $repository->findOneByName(CategoryController::$name_default);
+
 		if(!$category){
 			$category = new Category();
 			$category->setName(CategoryController::$name_default);
@@ -29,14 +30,11 @@ class ProductController extends Controller
 			$errors = $validator->validate($category);
 			
 			if (count($errors) > 0) {
-				/*
-				 * Uses a __toString method on the $errors variable which is a
-				 * ConstraintViolationList object. This gives us a nice string
-				 * for debugging.
-				 */
+
 				$errorsString = (string) $errors;
 			
-				return new Response($errorsString);
+				return $this->render("DWSBundle::index.html.twig", array("text" => $errorsString));
+
 			}
 				
 				
@@ -47,12 +45,13 @@ class ProductController extends Controller
 		
 		return $category;
 	}
-	
+	/*
 	private function initProduct(){
 		
-		$product = $this->getDoctrine()
-			->getRepository("DWSBundle:Product")
-			->find(self::$id_default);
+		$repository = $this->getDoctrine()
+		->getRepository("DWSBundle:Product");
+		
+		$product = $repository->findOneByName(self::$name_default);
 		
 		if(!$product){
 			$product = new Product();
@@ -62,25 +61,22 @@ class ProductController extends Controller
 			$product->setCategory($this->initCategory());
 			
 			$validator = $this->get("validator");
+			
 			$errors = $validator->validate($product);
 			
 			if (count($errors) > 0) {
-				/*
-				 * Uses a __toString method on the $errors variable which is a
-				 * ConstraintViolationList object. This gives us a nice string
-				 * for debugging.
-				 */
+
 				$errorsString = (string) $errors;
 			
-				return new Response($errorsString);
+				return $this->render("DWSBundle::index.html.twig", array("text" => $errorsString));
 			}
-				
 			
 			$this->addAction($product);
 		}	
 		
 		return $product;
 	}
+	*/
 	
     public function createStaticAction()
     {
@@ -96,14 +92,11 @@ class ProductController extends Controller
     	$errors = $validator->validate($product);
     	
     	if (count($errors) > 0) {
-    		/*
-    		 * Uses a __toString method on the $errors variable which is a
-    		 * ConstraintViolationList object. This gives us a nice string
-    		 * for debugging.
-    		 */
+
     		$errorsString = (string) $errors;
     	
-    		return new Response($errorsString);
+    		return $this->render("DWSBundle::index.html.twig", array("text" => $errorsString));
+
     	}
     	 
     	
@@ -137,14 +130,11 @@ class ProductController extends Controller
     	$errors = $validator->validate($product);
     	
     	if (count($errors) > 0) {
-    		/*
-    		 * Uses a __toString method on the $errors variable which is a
-    		 * ConstraintViolationList object. This gives us a nice string
-    		 * for debugging.
-    		 */
+
     		$errorsString = (string) $errors;
     	
-    		return new Response($errorsString);
+    		return $this->render("DWSBundle::index.html.twig", array("text" => $errorsString));
+
     	}
     	 
     	
@@ -251,7 +241,7 @@ class ProductController extends Controller
 	
 // 		return new Response($list);
 			
-		return $this->render("DWSBundle:Product:listbycat.html.twig", array("categories" => $cat
+		return $this->render("DWSBundle:Product:listbycat.html.twig", array("category" => $cat
 		));
 	}
 	
@@ -296,7 +286,7 @@ class ProductController extends Controller
 // 		return new Response($list);
 
 		
-		return $this->render("DWSBundle:Product:listbycat.html.twig", array("categories" => $categories
+		return $this->render("DWSBundle:Product:listallbycat.html.twig", array("categories" => $categories
 		));
 	}
 	
@@ -379,8 +369,8 @@ class ProductController extends Controller
 		}
 	
 		return $this->render("DWSBundle:Product:new.html.twig", array(
-				"form" => $form->createView(),"action" => null,"text" => null,
-		));
+				"form" => $form->createView()
+				));
 	}
 	
 	private function addAction($product) {

@@ -2,7 +2,7 @@
 
 {% block body %}
     {{ parent() }}
-    {% if action %}
+    {% if text is defined %}
 	    <div class="alert alert-success alert-dismissible" role="alert">
 	  		<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 	  		<strong>Sucess!</strong> {{ text }}
@@ -52,13 +52,16 @@
 			                {{ form_end(form) }}
                 	</div>
 				</div>
+				{#
+				<div class="row">
+					<div class="text-center"> 
+							<a href="{{ path('pro_create_def') }}"><button class="btn btn-primary btn-lg">Create default</button></a>
+					</div>
+				</div>
+				#}
 			</div>
 		</div>
-		<div class="row">
-			<div class="text-center"> 
-					<a href="{{ path('pro_create_def') }}"><button class="btn btn-lg">Create default</button></a>
-			</div>
-		</div>
+
 	</div>
 {% endblock %}
 

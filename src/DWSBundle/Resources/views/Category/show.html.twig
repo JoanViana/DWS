@@ -21,11 +21,10 @@
 								<td> {{ category.id }} </td> 
 	                            <td> {{ category.name }} </td> 	                            
                                 <td class="actions">
-                                	{#
-			                        <a href="{{ path('cat_list', {'id': category.id}) }}" class="btn btn-sm btn-info">
-			                            list all
+                                	<a href="{{ path('pro_list_bycat', {'category': category.name}) }}" class="btn btn-sm btn-success">
+			                            list products
 			                        </a>
-			                        
+                                	{#
 			                        <a href="{{ path('cat_edit', {'id': category.id}) }}" class="btn btn-sm btn-primary">
 			                            edit
 			                        </a>
@@ -39,10 +38,12 @@
 				</table>
 			</div>
 		</div>
+		{#
 		<div class="row">
 			<div class="text-center"> 
 					<a href="{{ path('cat_list') }}"><button class="btn btn-primary btn-lg">List all</button></a>
 			</div>
 		</div>
+		#}
 	</div>
 {% endblock %}

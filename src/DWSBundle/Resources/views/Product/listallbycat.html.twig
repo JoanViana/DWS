@@ -31,7 +31,7 @@
 								</tr>
 							</thead>
 							<tbody>
-								{% for product in category.getProducts() %}
+								{% for product in category.products %}
 		                            <tr>
 										<td> {{ product.id }} </td> 
 			                            <td> {{ product.name }} </td> 
@@ -57,11 +57,13 @@
 						</table>
 					</div>
 				</div>
+				{#
 				<div class="row">
 					<div class="text-center"> 
 							<a href="{{ path('pro_create_def') }}"><button class="btn btn-primary btn-lg">Create default</button></a>
 					</div>
 				</div>
+				#}
 			</div>
 		{% endfor %}
 	</div>
