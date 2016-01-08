@@ -234,4 +234,11 @@ class CategoryController extends Controller
 		$em->remove($category);
 		$em->flush();
 	}
+	
+	public function getAllAction() {
+	
+	    $repository = $this->getDoctrine()
+	       ->getRepository("DWSBundle:Category");
+	    return $repository->findAll();
+	}
 }
