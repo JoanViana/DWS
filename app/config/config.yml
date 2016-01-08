@@ -50,9 +50,9 @@ assetic:
         #    jar: "%kernel.root_dir%/Resources/java/yuicompressor-2.4.7.jar"
 
 # Doctrine Configuration
-doctrine:
+doctrine:   
     dbal:
-        driver:   pdo_mysql
+        driver:   pdo_pgsql            # pdo_mysql
         host:     "%database_host%"
         port:     "%database_port%"
         dbname:   "%database_name%"
