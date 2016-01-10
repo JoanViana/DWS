@@ -3,6 +3,7 @@
 namespace DWSBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use DWSBundle\Entity\Category;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
@@ -42,6 +43,10 @@ class CategoryController extends Controller
 	}
 	*/
 	
+	
+	/**
+ 	* @Security("has_role('ROLE_ADMIN')")
+ 	*/
 	public function createStaticAction()
 	{
 		$category = new Category();
@@ -63,15 +68,21 @@ class CategoryController extends Controller
 		 
 		$text = "Default category added. Id: ".$category->getId();
 		
+		/*
 		$repository = $this->getDoctrine()
 		->getRepository("DWSBundle:Category");
-		
 		$categories = $repository->findAll();
-		 
+		*/
+		
+		$categories = $this->searchAllAction();
+		
 		return $this->render("DWSBundle:Category:list.html.twig", array("text" => $text,
 																			"categories" => $categories));
 	}
 	
+	/**
+ 	* @Security("has_role('ROLE_ADMIN')")
+ 	*/
     public function createAction($name)
     {
     	$category = new Category();
@@ -81,17 +92,12 @@ class CategoryController extends Controller
     	$errors = $validator->validate($category);
     	
     	if (count($errors) > 0) {
-    		/*
-    		 * Uses a __toString method on the $errors variable which is a
-    		 * ConstraintViolationList object. This gives us a nice string
-    		 * for debugging.
-    		 */
+
     		$errorsString = (string) $errors;
     	
     		return $this->render("DWSBundle::index.html.twig", array("text" => $errorsString));
 
     	}
-    	 
     	
     	$this->addAction($category);
     	
@@ -100,12 +106,19 @@ class CategoryController extends Controller
         //return $this->render("DWSBundle::index.html.twig", array("name" => $name));
     }
     
+    /**
+ 	* @Security("has_role('ROLE_ADMIN','ROLE_USER')")
+ 	*/
     public function showAction($id)
     {
+    	
+    	/*
     	$category = $this->getDoctrine()
 	    	->getRepository("DWSBundle:Category")
 	    	->find($id);
-    
+    	*/
+    	$category = $this->searchByIdAction($id);
+    	
     	if (!$category) {
 //     		throw $this->createNotFoundException(
 //     				"No product found for id ".$id
@@ -113,7 +126,9 @@ class CategoryController extends Controller
 //     		return new Response("There is not any category with id: ".$id);
     
 			$text = "There is not any category with id: ".$id;
-			return $this->render("DWSBundle::index.html.twig", array("text" => $text));    	}
+			return $this->render("DWSBundle::index.html.twig", array("text" => $text));    	
+    		
+    	}
     
 //     	return new Response("Id: ".$category->getId().
 // 							"\n Name: ".$category->getName()."\n\n");
@@ -121,14 +136,18 @@ class CategoryController extends Controller
     	return $this->render("DWSBundle:Category:show.html.twig", array("category" => $category));
     }
     
-
+	/**
+ 	* @Security("has_role('ROLE_ADMIN','ROLE_USER')")
+ 	*/
 	public function listAction()
 	{
+		/*
 		$repository = $this->getDoctrine()
 	        ->getRepository("DWSBundle:Category");
-		
 	    $categories = $repository->findAll();
-	
+		*/
+		$categories = $this->searchAllAction();
+		
 		if (count($categories) === 0) {
 // 			throw $this->createNotFoundException(
 // 					"No products found");
@@ -151,12 +170,17 @@ class CategoryController extends Controller
 		return $this->render("DWSBundle:Category:list.html.twig", array("categories" => $categories));
 	}
 	
-
+	/**
+ 	* @Security("has_role('ROLE_ADMIN')")
+ 	*/
 	public function deleteAction($id)
 	{
+		/*
 		$category = $this->getDoctrine()
 		->getRepository("DWSBundle:Category")
 		->find($id);
+		*/
+		$category = $this->searchByIdAction($id);
 	
 		if (!$category) {
 // 			throw $this->createNotFoundException(
@@ -172,16 +196,20 @@ class CategoryController extends Controller
 	
 		$text = "Category ".$category->getName()." with Id ". $id." removed";
 		//return new Response("Category ".$category->getName()." with Id ". $id." removed");
-		
+		/*
 		$repository = $this->getDoctrine()
 		->getRepository("DWSBundle:Category");
-		
 		$categories = $repository->findAll();
+		*/
+		$categories = $this->searchAllAction();
 		 
 		return $this->render("DWSBundle:Category:list.html.twig", array("text" => $text,
 				"categories" => $categories));
 	}
 	
+	/**
+ 	* @Security("has_role('ROLE_ADMIN')")
+ 	*/
 	public function newCategoryAction(Request $request) {
 	
 		$category = new Category();
@@ -221,6 +249,42 @@ class CategoryController extends Controller
 		));
 	}
 	
+	/**
+ 	* @Security("has_role('ROLE_ADMIN')")
+ 	*/
+	public function editAction($id, Request $request) 
+	{
+		$category = $this->searchByIdAction($id);
+
+		$form = $this->createFormBuilder($category)
+			->add("name", "text", array(
+					//"placeholder" 	=> "Alimentacion",
+					"required"    	=> true,
+					"empty_data"  	=> null,
+					"data"			=> $category->getName()))
+			->add('save', 'submit', array('label' => 'Update Category'))
+			->getForm();
+	
+		$form->handleRequest($request);
+	
+		if ($request->isMethod("POST") && $form->isValid()) {
+			
+			$this->updateAction();
+			
+			//return new Response("Category ".$category->getName()." with Id ". $category->getId()." added");
+			$text = "Category ".$category->getName()." with Id ". $category->getId()." updated";
+			$categories = $this->searchAllAction();
+			//return $this->redirectToRoute('cat_list', array("text" => $text,"categories" => $categories));
+			return $this->render("DWSBundle:Category:list.html.twig", array("text" => $text,
+				"categories" => $categories));
+		}
+	
+		return $this->render("DWSBundle:Category:edit.html.twig", array(
+				"form" => $form->createView(),
+				"category" => $category
+		));
+	}
+	
 	private function addAction($category) {
 	
 		$em = $this->getDoctrine()->getManager();
@@ -234,4 +298,26 @@ class CategoryController extends Controller
 		$em->remove($category);
 		$em->flush();
 	}
+		
+	private function updateAction() {
+	
+		$em = $this->getDoctrine()->getManager();
+		$em->flush();
+	}
+	
+	private function searchByIdAction($id) {
+	
+    	return $this->getDoctrine()
+	    	->getRepository("DWSBundle:Category")
+	    	->find($id);
+	}
+	
+	private function searchAllAction() {
+	
+		$repository = $this->getDoctrine()
+			->getRepository("DWSBundle:Category");
+		
+		return $repository->findAll();
+	}
+
 }

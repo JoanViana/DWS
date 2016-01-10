@@ -3,6 +3,7 @@
 namespace DWSBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use DWSBundle\Entity\Product;
 use DWSBundle\Entity\Category;
 use Symfony\Component\HttpFoundation\Response;
@@ -78,6 +79,10 @@ class ProductController extends Controller
 	}
 	*/
 	
+	
+	/**
+ 	* @Security("has_role('ROLE_ADMIN')")
+ 	*/
     public function createStaticAction()
     {
     	$category = $this->initCategory();
@@ -116,7 +121,10 @@ class ProductController extends Controller
     			"products" => $products));
     }
     
-   public function createParamAction($name,$price)
+    /**
+ 	* @Security("has_role('ROLE_ADMIN')")
+ 	*/
+    public function createParamAction($name,$price)
     {
     	$category = $this->initCategory();
     
@@ -150,7 +158,10 @@ class ProductController extends Controller
     	//return $this->render("DWSBundle::index.html.twig", array("name" => $name));
     
     }
-    
+
+	/**
+ 	* @Security("has_role('ROLE_ADMIN','ROLE_USER')")
+ 	*/
 	public function showAction($id)
 	{
 	    $product = $this->getDoctrine()
@@ -177,6 +188,9 @@ class ProductController extends Controller
 		return $this->render("DWSBundle:Product:show.html.twig", array("product" => $product));
 	}
 	
+	/**
+ 	* @Security("has_role('ROLE_ADMIN','ROLE_USER')")
+ 	*/
 	public function listAction()
 	{
 		$repository = $this->getDoctrine()
@@ -210,6 +224,9 @@ class ProductController extends Controller
 		 
 	}
 	
+	/**
+ 	* @Security("has_role('ROLE_ADMIN','ROLE_USER')")
+ 	*/
 	public function listByCategoryAction($category)
 	{
 		$repository = $this->getDoctrine()
@@ -245,7 +262,9 @@ class ProductController extends Controller
 		));
 	}
 	
-
+	/**
+ 	* @Security("has_role('ROLE_ADMIN','ROLE_USER')")
+ 	*/
 	public function listAllByCategoryAction()
 	{
 		$repository = $this->getDoctrine()
@@ -290,6 +309,9 @@ class ProductController extends Controller
 		));
 	}
 	
+	/**
+ 	* @Security("has_role('ROLE_ADMIN')")
+ 	*/	
 	public function deleteAction($id)
 	{
 		$product = $this->getDoctrine()
@@ -320,6 +342,9 @@ class ProductController extends Controller
 		));
 	}
 	
+	/**
+ 	* @Security("has_role('ROLE_ADMIN')")
+ 	*/
 	public function newProductAction(Request $request) {
 		
 		$product = new Product();
@@ -373,6 +398,60 @@ class ProductController extends Controller
 				));
 	}
 	
+	/**
+ 	* @Security("has_role('ROLE_ADMIN')")
+ 	*/	
+	public function editAction($id, Request $request) {
+		
+		$product = $this->searchByIdAction($id);
+	
+		$form = $this->createFormBuilder($product)
+			->add("name", "text", array(
+					//"placeholder" 	=> "Pan Bimbo Familiar",
+					"required"    	=> true,
+					"empty_data"  	=> null,
+					"data"			=> $product->getName()))
+			->add("category","entity",array(
+					"class" => "DWSBundle:Category",
+					"choice_label" => "name",
+					//"placeholder" 	=> "Alimentacion",
+					"required"    	=> true,
+					"empty_data"  	=> null,
+					"data"			=> $product->getCategory()))
+			->add("price", "money", array(
+					"currency"		=> "EUR",
+					//"placeholder" 	=> 01.99,
+					"scale"			=> 2,
+					"required"    	=> true,
+					"empty_data"  	=> null,
+					"data"			=> $product->getPrice()))
+			->add("description", "textarea", array(
+					//"placeholder" 	=> "Brief description",
+					"required"    	=> false,
+					"data"			=> $product->getDescription()))
+    		->add('save', 'submit', array('label' => 'Update Product'))
+	
+			->getForm();
+		
+		$form->handleRequest($request);
+		
+		if ($request->isMethod("POST") && $form->isValid()) {
+			
+			$this->updateAction();
+			
+			//return new Response("Product ".$product->getName()." with Id ". $product->getId()." added");
+			$text = "Product ".$product->getName()." with Id ". $product->getId()." updated";
+			$products = $this->searchAllAction();
+			return $this->render("DWSBundle:Product:list.html.twig", array("text" => $text,
+				"products" => $products));
+		}
+	
+		return $this->render("DWSBundle:Product:edit.html.twig", array(
+				"form" => $form->createView(),
+				"product" => $product
+		));
+	}
+	
 	private function addAction($product) {
 		
 		$em = $this->getDoctrine()->getManager();		
@@ -385,6 +464,36 @@ class ProductController extends Controller
 		$em = $this->getDoctrine()->getManager();
 		$em->remove($product);
 		$em->flush();
-	}	
+	}
 	
+	private function updateAction() {
+	
+		$em = $this->getDoctrine()->getManager();
+		$em->flush();
+	}
+	
+	private function searchByIdAction($id) {
+	
+    	return $this->getDoctrine()
+	    	->getRepository("DWSBundle:Product")
+	    	->find($id);
+	}
+	
+	private function searchAllAction() {
+	
+		$repository = $this->getDoctrine()
+			->getRepository("DWSBundle:Product");
+		
+		return $repository->findAll();
+	}
+	/*
+	private function searchByNameAction($name) {
+	
+		$repository = $this->getDoctrine()
+			->getRepository("DWSBundle:Product");
+		
+		return $repository->findOneByName(self::$name_default);
+	}
+	*/
+
 }

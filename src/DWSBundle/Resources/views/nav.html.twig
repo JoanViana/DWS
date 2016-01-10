@@ -21,8 +21,10 @@
 		          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Person <span class="caret"></span></a>
 		          <ul class="dropdown-menu">
 		            <li><a href="{{ path('per_list') }}">List</a></li>
-		            <li role="separator" class="divider"></li>
+		            {% if is_granted('ROLE_ADMIN') %}
+                    <li role="separator" class="divider"></li>
 		            <li><a href="{{ path('per_new') }}">New</a></li>
+                    {% endif %}
 		          </ul>
 		        </li>
 		        
@@ -30,8 +32,10 @@
 		          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Category <span class="caret"></span></a>
 		          <ul class="dropdown-menu">
 		            <li><a href="{{ path('cat_list') }}">List</a></li>
+		            {% if is_granted('ROLE_ADMIN') %}
 		            <li role="separator" class="divider"></li>
 		            <li><a href="{{ path('cat_new') }}">New</a></li>
+		            {% endif %}
 		          </ul>
 		        </li>
 		        
@@ -40,8 +44,10 @@
 		          <ul class="dropdown-menu">
 		            <li><a href="{{ path('pro_list') }}">List</a></li>
 		            <li><a href="{{ path('pro_list_allbycat') }}">List by category</a></li>
+		            {% if is_granted('ROLE_ADMIN') %}
 		            <li role="separator" class="divider"></li>
 		            <li><a href="{{ path('pro_new') }}">New</a></li>
+		            {% endif %}
 		          </ul>
 		        </li>
 		        

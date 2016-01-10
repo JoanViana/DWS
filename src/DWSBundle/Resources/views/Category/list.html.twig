@@ -34,14 +34,14 @@
 			                        <a href="{{ path('cat_show', {'id': category.id}) }}" class="btn btn-sm btn-info">
 			                            details
 			                        </a>
-			                        {#
+			                        {% if is_granted('ROLE_ADMIN') %}
 			                        <a href="{{ path('cat_edit', {'id': category.id}) }}" class="btn btn-sm btn-primary">
 			                            edit
 			                        </a>
-			                        #}
 			                        <a href="{{ path('cat_delete', {'id': category.id}) }}" class="btn btn-sm btn-danger btn-delete">
 			                            delete
 			                        </a>
+			                        {% endif %}
 				                </td>
                             </tr>
                          {% endfor %}

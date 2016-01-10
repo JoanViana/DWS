@@ -2,6 +2,10 @@ index:
     path:     /index
     defaults: { _controller: DWSBundle:Default:index }
 
+admin:
+    path:     /admin
+    defaults: { _controller: DWSBundle:Default:admin }
+
 pro_create_def:
     path:     /product/create
     defaults: { _controller: DWSBundle:Product:createStatic }
@@ -17,7 +21,14 @@ pro_show:
     path:     /product/show/{id}
     defaults: { _controller: DWSBundle:Product:show }
     requirements:
-        id:  \d+    
+        id:  \d+  
+        
+pro_edit:
+    path:     /product/edit/{id}
+    defaults: { _controller: DWSBundle:Product:edit }
+    requirements:
+        id:  \d+  
+    methods:  [GET|POST]
             
 pro_list:
     path:     /product/list
@@ -76,7 +87,12 @@ cat_new:
     defaults: { _controller: DWSBundle:Category:newCategory }
     methods:  [GET|POST]
     
-    
+cat_edit:
+    path:     /category/edit/{id}
+    defaults: { _controller: DWSBundle:Category:edit }
+    requirements:
+        id:  \d+  
+    methods:  [GET|POST]    
     
     
 per_create_def:
