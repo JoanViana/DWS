@@ -2,23 +2,40 @@
 # http://symfony.com/doc/current/book/security.html
 security:
     providers:
+        chain_provider:
+            chain:
+                providers: [fos_userbundle_username, fos_userbundle_email, in_memory]
+        fos_userbundle_username:
+            id:    dws.username_provider
+        fos_userbundle_email:
+            id:    dws.email_provider
         in_memory:
             memory:
                 users:
-                    user1:
+                    user:
                         password: 1234
                         roles: 'ROLE_USER'
                     user2:
                         password: 1234
                         roles: 'ROLE_USER'
                     admin:
-                        password: admin
-                        roles: 'ROLE_ADMIN'
+                        password: 1234_ToChungaLaContrasenia
+                        roles: 'ROLE_APP_ADMIN'
+        
     encoders:
         Symfony\Component\Security\Core\User\User: plaintext
+        FOS\UserBundle\Model\UserInterface: 
+            cost: 12
+            algorithm: bcrypt
 
     firewalls:
-        # disables authentication for assets and the profiler, adapt it according to your needs
+        main:
+            pattern: ^/
+            form_login:
+                provider: chain_provider
+                csrf_provider: security.csrf.token_manager
+            logout:       true
+            anonymous:    true
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
@@ -26,8 +43,30 @@ security:
         my_secured_area:
             anonymous: ~
             http_basic: ~
+    
+    role_hierarchy:
+        ROLE_ADMIN:       [ROLE_USER,ROLE_APP_ADMIN]
+        ROLE_SUPER_ADMIN: ROLE_ADMIN
 
     access_control:
-        # require ROLE_ADMIN for /admin*
         - { path: ^/admin/users, roles: ROLE_SUPER_ADMIN }
         - { path: ^/admin, roles: ROLE_ADMIN }
+        - { path: ^/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/register, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/resetting, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/product/list, role: [ROLE_USER,ROLE_APP_ADMIN] }
+        - { path: ^/product/show, role: [ROLE_USER,ROLE_APP_ADMIN] }
+        - { path: ^/product/create, role: ROLE_APP_ADMIN }
+        - { path: ^/product/new, role: ROLE_APP_ADMIN }
+        - { path: ^/product/delete, role: ROLE_APP_ADMIN }
+        - { path: ^/product/edit, role: ROLE_APP_ADMIN }
+        - { path: ^/category/list, role: [ROLE_USER,ROLE_APP_ADMIN] }
+        - { path: ^/category/show, role: [ROLE_USER,ROLE_APP_ADMIN] }
+        - { path: ^/category/create, role: ROLE_APP_ADMIN }
+        - { path: ^/category/new, role: ROLE_APP_ADMIN }
+        - { path: ^/category/delete, role: ROLE_APP_ADMIN }
+        - { path: ^/category/edit, role: ROLE_APP_ADMIN }
+
+
+
+

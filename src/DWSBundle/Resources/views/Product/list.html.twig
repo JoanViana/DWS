@@ -36,7 +36,7 @@
 			                        <a href="{{ path('pro_show', {'id': product.id}) }}" class="btn btn-sm btn-info">
 			                            details
 			                        </a>
-			                        {% if is_granted('ROLE_ADMIN') %}
+			                        {% if is_granted('ROLE_APP_ADMIN') %}
 			                        <a href="{{ path('pro_edit', {'id': product.id}, {'product': product, 'action': null}) }}" class="btn btn-sm btn-primary">
 			                            edit
 			                        </a>

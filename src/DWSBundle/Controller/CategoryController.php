@@ -45,7 +45,7 @@ class CategoryController extends Controller
 	
 	
 	/**
- 	* @Security("has_role('ROLE_ADMIN')")
+ 	* @Security("has_role('ROLE_APP_ADMIN')")
  	*/
 	public function createStaticAction()
 	{
@@ -81,7 +81,7 @@ class CategoryController extends Controller
 	}
 	
 	/**
- 	* @Security("has_role('ROLE_ADMIN')")
+ 	* @Security("has_role('ROLE_APP_ADMIN')")
  	*/
     public function createAction($name)
     {
@@ -107,7 +107,7 @@ class CategoryController extends Controller
     }
     
     /**
- 	* @Security("has_role('ROLE_ADMIN','ROLE_USER')")
+ 	* @Security("has_role('ROLE_APP_ADMIN'||'ROLE_USER')")
  	*/
     public function showAction($id)
     {
@@ -137,7 +137,7 @@ class CategoryController extends Controller
     }
     
 	/**
- 	* @Security("has_role('ROLE_ADMIN','ROLE_USER')")
+ 	* @Security("has_role('ROLE_APP_ADMIN'||'ROLE_USER')")
  	*/
 	public function listAction()
 	{
@@ -171,7 +171,7 @@ class CategoryController extends Controller
 	}
 	
 	/**
- 	* @Security("has_role('ROLE_ADMIN')")
+ 	* @Security("has_role('ROLE_APP_ADMIN')")
  	*/
 	public function deleteAction($id)
 	{
@@ -208,7 +208,7 @@ class CategoryController extends Controller
 	}
 	
 	/**
- 	* @Security("has_role('ROLE_ADMIN')")
+ 	* @Security("has_role('ROLE_APP_ADMIN')")
  	*/
 	public function newCategoryAction(Request $request) {
 	
@@ -250,7 +250,7 @@ class CategoryController extends Controller
 	}
 	
 	/**
- 	* @Security("has_role('ROLE_ADMIN')")
+ 	* @Security("has_role('ROLE_APP_ADMIN')")
  	*/
 	public function editAction($id, Request $request) 
 	{

@@ -6,6 +6,11 @@ admin:
     path:     /admin
     defaults: { _controller: DWSBundle:Default:admin }
 
+fos_user_security_login_username:
+    defaults: { _controller: DWSBundle:User:login }
+    path:     /login/username
+    methods:  [GET|POST]
+
 pro_create_def:
     path:     /product/create
     defaults: { _controller: DWSBundle:Product:createStatic }

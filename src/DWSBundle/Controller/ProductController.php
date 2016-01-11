@@ -81,7 +81,7 @@ class ProductController extends Controller
 	
 	
 	/**
- 	* @Security("has_role('ROLE_ADMIN')")
+ 	* @Security("has_role('ROLE_APP_ADMIN')")
  	*/
     public function createStaticAction()
     {
@@ -122,7 +122,7 @@ class ProductController extends Controller
     }
     
     /**
- 	* @Security("has_role('ROLE_ADMIN')")
+ 	* @Security("has_role('ROLE_APP_ADMIN')")
  	*/
     public function createParamAction($name,$price)
     {
@@ -160,7 +160,7 @@ class ProductController extends Controller
     }
 
 	/**
- 	* @Security("has_role('ROLE_ADMIN','ROLE_USER')")
+ 	* @Security("has_role('ROLE_APP_ADMIN'||'ROLE_USER')")
  	*/
 	public function showAction($id)
 	{
@@ -189,7 +189,7 @@ class ProductController extends Controller
 	}
 	
 	/**
- 	* @Security("has_role('ROLE_ADMIN','ROLE_USER')")
+ 	* @Security("has_role('ROLE_APP_ADMIN'||'ROLE_USER')")
  	*/
 	public function listAction()
 	{
@@ -225,7 +225,7 @@ class ProductController extends Controller
 	}
 	
 	/**
- 	* @Security("has_role('ROLE_ADMIN','ROLE_USER')")
+ 	* @Security("has_role('ROLE_APP_ADMIN'||'ROLE_USER')")
  	*/
 	public function listByCategoryAction($category)
 	{
@@ -263,7 +263,7 @@ class ProductController extends Controller
 	}
 	
 	/**
- 	* @Security("has_role('ROLE_ADMIN','ROLE_USER')")
+ 	* @Security("has_role('ROLE_APP_ADMIN'||'ROLE_USER')")
  	*/
 	public function listAllByCategoryAction()
 	{
@@ -310,7 +310,7 @@ class ProductController extends Controller
 	}
 	
 	/**
- 	* @Security("has_role('ROLE_ADMIN')")
+ 	* @Security("has_role('ROLE_APP_ADMIN')")
  	*/	
 	public function deleteAction($id)
 	{
@@ -343,7 +343,7 @@ class ProductController extends Controller
 	}
 	
 	/**
- 	* @Security("has_role('ROLE_ADMIN')")
+ 	* @Security("has_role('ROLE_APP_ADMIN')")
  	*/
 	public function newProductAction(Request $request) {
 		
@@ -399,7 +399,7 @@ class ProductController extends Controller
 	}
 	
 	/**
- 	* @Security("has_role('ROLE_ADMIN')")
+ 	* @Security("has_role('ROLE_APP_ADMIN')")
  	*/	
 	public function editAction($id, Request $request) {
 		

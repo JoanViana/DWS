@@ -1,0 +1,13 @@
+{% extends "FOSUserBundle:Security:login.html.twig" %}
+
+{% trans_default_domain 'FOSUserBundle' %}
+
+{% block fos_user_content_login %}
+    <div class="form-group">
+        <label class="col-md-3 col-md-pull-3" for="username">{{ 'security.login.username'|trans }}</label>
+        <input class="col-md-9 col-md-pull-3" type="text" id="username" name="_username"  placeholder= 'Your username' value="{{ last_username }}" required="required" />
+    </div>
+    <sup>
+        <a href="{{ path('fos_user_security_login') }}" id="_submitByEmail" />Login by email</a>
+    </sup>
+{% endblock %}

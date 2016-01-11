@@ -1,0 +1,25 @@
+/*.navbar .navbar-nav {
+    display: inline-block;
+    float: none;
+}
+
+.navbar .navbar-collapse {
+    text-align: center;
+}
+
+.navbar-brand
+{
+    position: absolute;
+    left: 0;
+    text-align: left;
+    margin: auto;
+}
+
+.navbar-text
+{
+    position: absolute;
+    width: 98%;
+    left: 0;
+    text-align: right;
+}
+*/

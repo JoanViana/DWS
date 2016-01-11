@@ -3,7 +3,7 @@
 {% block body %}
     {{ parent() }}
 	<div class="container">
-		<div class="col-md-12">
+			<div class="col-md-6 col-md-offset-3">
 			<div class="page-header margin-none">
 				<h2 class="padding-none">Product {{product.name}} (id: {{product.id}})</h2>
 			</div>
@@ -27,7 +27,7 @@
 	                            <td> {{ product.price }} </td> 
 	                            <td> {{ product.description }} </td> 
                                 <td class="actions">
-                                	{% if is_granted('ROLE_ADMIN') %}
+                                	{% if is_granted('ROLE_APP_ADMIN') %}
 			                        <a href="{{ path('pro_edit', {'id': product.id}, {'product': product, 'action': null}) }}" class="btn btn-sm btn-primary">
 			                            edit
 			                        </a>

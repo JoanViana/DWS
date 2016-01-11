@@ -8,20 +8,20 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="{{ path('index') }}">@DWSBundle</a>
-            <p class="navbar-text">Joan Dídac Viana Fons</p>
+            <a class="navbar-brand">@DWSBundle</a>
+            <!-- <p class="navbar-text hidden-xs">Joan Dídac Viana Fons</p> -->
         </div>
 
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav block-center">
-		        <li class="active"><a href="{{ path('index') }}">Home <span class="sr-only">(current)</span></a></li>
+		        <li><a href="{{ path('index') }}">Home <span class="sr-only">(current)</span></a></li>
 	        
 		        <li class="dropdown">
 		          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Person <span class="caret"></span></a>
 		          <ul class="dropdown-menu">
 		            <li><a href="{{ path('per_list') }}">List</a></li>
-		            {% if is_granted('ROLE_ADMIN') %}
+		            {% if is_granted('ROLE_APP_ADMIN') %}
                     <li role="separator" class="divider"></li>
 		            <li><a href="{{ path('per_new') }}">New</a></li>
                     {% endif %}
@@ -32,7 +32,7 @@
 		          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Category <span class="caret"></span></a>
 		          <ul class="dropdown-menu">
 		            <li><a href="{{ path('cat_list') }}">List</a></li>
-		            {% if is_granted('ROLE_ADMIN') %}
+		            {% if is_granted('ROLE_APP_ADMIN') %}
 		            <li role="separator" class="divider"></li>
 		            <li><a href="{{ path('cat_new') }}">New</a></li>
 		            {% endif %}
@@ -44,14 +44,46 @@
 		          <ul class="dropdown-menu">
 		            <li><a href="{{ path('pro_list') }}">List</a></li>
 		            <li><a href="{{ path('pro_list_allbycat') }}">List by category</a></li>
-		            {% if is_granted('ROLE_ADMIN') %}
+		            {% if is_granted('ROLE_APP_ADMIN') %}
 		            <li role="separator" class="divider"></li>
 		            <li><a href="{{ path('pro_new') }}">New</a></li>
 		            {% endif %}
 		          </ul>
 		        </li>
-		        
             </ul>
+                {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+                    <p class="navbar-text navbar-right hidden-xs">
+                        {{ 'layout.logged_in_as'|trans({'%username%': app.user.username}, 'FOSUserBundle') }} | 
+                        <a href="{{ path('fos_user_security_logout') }}">
+                            {{ 'layout.logout'|trans({}, 'FOSUserBundle') }}
+                        </a>
+                    </p>
+                    {#<button type="button" class="btn btn-default navbar-btn navbar-right">Logout</button>#}
+                
+                {% else %}
+                <form class="navbar-form navbar-right form-inline navbar-right">
+                    <div class="form-group form-group-sm">
+                        <a href="{{ path('fos_user_registration_register') }}" class="btn btn-sm btn-success navbar-right"><strong>Register</strong></a>
+                    </div>
+                </form>
+                
+            	<form class="navbar-form navbar-right form-inline navbar-right" action="{{ path("fos_user_security_check") }}" method="post" name='authenticate'>
+                    <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}" />
+                    <fieldset>
+                        <div class="form-group form-group-sm">
+                            <input type="text" class="form-control" id="username" name="_username" placeholder="Email or username" required="required">
+                        </div>
+                        <div class="form-group form-group-sm">
+                            <input type="password" class="form-control" id="password" name="_password" placeholder="Password" required="required">
+                        </div> 
+                        <div class="form-group form-group-sm">
+                            <a><input href="{{ path('fos_user_security_login') }}" class="btn btn-sm btn-info" type="submit" id="_submit" name="_submit" value="Sign in" /></a>                        
+                        </div>
+                    </fieldset>
+                </form>
+
+                {% endif %}
+
         </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->
 </nav>
