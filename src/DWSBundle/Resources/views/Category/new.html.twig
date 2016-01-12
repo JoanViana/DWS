@@ -1,33 +1,28 @@
 {% extends 'DWSBundle::layout.html.twig' %}
-
+{% trans_default_domain 'DWSBundle' %} 
+{% block title %}DWS - {{ 'category.new.title'|trans }}{% endblock %}
 {% block body %}
     {{ parent() }}
-    {% if text is defined %}
-	    <div class="alert alert-success alert-dismissible" role="alert">
-	  		<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-	  		<strong>Sucess!</strong> {{ text }}
-		</div>    	
-	{% endif %}
 	<div class="main container">
 		<div class="row well">
 			<div class="col-md-6 col-md-offset-3">
 				<div class="page-header">
-					<h2>New Category</h2>
+					<h2>{{ 'category.new.header'|trans }}</h2>
 				</div>
                 {{ form_start(form, { 'attr' : {'novalidate': 'novalidate', 'role' : 'form'} }) }}
             <fieldset>
                 <div class="form-group">
                     {{ form_label(form.name) }}
-                    {{ form_widget(form.name, { 'attr' : {'class' : 'form-control', 'placeholder' : 'Category name'} }) }}
+                    {{ form_widget(form.name, { 'attr' : {'class' : 'form-control' } }) }}
                     <span class="text-danger">{{ form_errors(form.name) }}</span>
                 </div>
 			</fieldset>
 
 				<div class="row">
-					<div class="col-sm-offset-2 col-sm-10">
+					<div class="col-sm-12">
 					    <p>
-					        {{ form_widget(form.save, {'label' : 'Create category', 'attr': {'class': 'btn btn-success'}}) }}
-					        {{ form_widget(form.saveAndAdd, {'label' : 'Save and Continue', 'attr': {'class': 'btn btn-info'}}) }}
+					        {{ form_widget(form.save, {'attr': {'class': 'btn btn-success'}}) }}
+					        {{ form_widget(form.saveAndAdd, {'attr': {'class': 'btn btn-info'}}) }}
 
 					    </p>        
 			                {{ form_end(form) }}

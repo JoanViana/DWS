@@ -1,16 +1,12 @@
 {% extends 'DWSBundle::layout.html.twig' %}
+{% trans_default_domain 'DWSBundle' %} 
 
 {% block body %}
     {{ parent() }}
-    {% if text is defined and success is not defined %}
+    {% if text is defined %}
 	    <div class="alert alert-danger alert-dismissible" role="alert">
 	  		<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-	  		<strong>Error!</strong> {{ text }}
-		</div> 
-	{% elseif text is defined and success is defined %}
-	    <div class="alert alert-success alert-dismissible" role="alert">
-	  		<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-	  		<strong>Success!</strong> {{ text }}
+	  		<strong>{{ 'flash.error' | trans }}</strong> {{ text }}
 		</div> 
 	{% endif %}
     
@@ -22,8 +18,8 @@
      	<div class="row">             
         	<div class="col-xs-12">
 				<ul class="list-group">
-				 	<li class="list-group-item"><strong>User: </strong><em>User </em></li>
-				  	<li class="list-group-item"><strong> Pass: </strong><em>1234</em></li>
+				 	<li class="list-group-item"><strong>{{ 'form.username' | trans }}: </strong><em>User </em></li>
+				  	<li class="list-group-item"><strong>{{ 'form.password' | trans }}: </strong><em>1234</em></li>
 				</ul>
 			</div>
         </div>

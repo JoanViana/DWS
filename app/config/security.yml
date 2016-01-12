@@ -30,12 +30,16 @@ security:
 
     firewalls:
         main:
+            
             pattern: ^/
+            anonymous:    true
             form_login:
                 provider: chain_provider
                 csrf_provider: security.csrf.token_manager
-            logout:       true
-            anonymous:    true
+                login_path: fos_user_security_login
+                check_path: fos_user_security_check
+            logout:
+                path: fos_user_security_logout
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
@@ -49,23 +53,23 @@ security:
         ROLE_SUPER_ADMIN: ROLE_ADMIN
 
     access_control:
-        - { path: ^/admin/users, roles: ROLE_SUPER_ADMIN }
-        - { path: ^/admin, roles: ROLE_ADMIN }
-        - { path: ^/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/register, role: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/resetting, role: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/product/list, role: [ROLE_USER,ROLE_APP_ADMIN] }
-        - { path: ^/product/show, role: [ROLE_USER,ROLE_APP_ADMIN] }
-        - { path: ^/product/create, role: ROLE_APP_ADMIN }
-        - { path: ^/product/new, role: ROLE_APP_ADMIN }
-        - { path: ^/product/delete, role: ROLE_APP_ADMIN }
-        - { path: ^/product/edit, role: ROLE_APP_ADMIN }
-        - { path: ^/category/list, role: [ROLE_USER,ROLE_APP_ADMIN] }
-        - { path: ^/category/show, role: [ROLE_USER,ROLE_APP_ADMIN] }
-        - { path: ^/category/create, role: ROLE_APP_ADMIN }
-        - { path: ^/category/new, role: ROLE_APP_ADMIN }
-        - { path: ^/category/delete, role: ROLE_APP_ADMIN }
-        - { path: ^/category/edit, role: ROLE_APP_ADMIN }
+        - { path: ^/[a-z]+/admin/users, roles: ROLE_SUPER_ADMIN }
+        - { path: ^/[a-z]+/admin, roles: ROLE_ADMIN }
+        - { path: ^/[a-z]+/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/[a-z]+/register, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/[a-z]+/resetting, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/[a-z]+/product/list, role: [ROLE_USER,ROLE_APP_ADMIN] }
+        - { path: ^/[a-z]+/product/show, role: [ROLE_USER,ROLE_APP_ADMIN] }
+        - { path: ^/[a-z]+/product/create, role: ROLE_APP_ADMIN }
+        - { path: ^/[a-z]+/product/new, role: ROLE_APP_ADMIN }
+        - { path: ^/[a-z]+/product/delete, role: ROLE_APP_ADMIN }
+        - { path: ^/[a-z]+/product/edit, role: ROLE_APP_ADMIN }
+        - { path: ^/[a-z]+/category/list, role: [ROLE_USER,ROLE_APP_ADMIN] }
+        - { path: ^/[a-z]+/category/show, role: [ROLE_USER,ROLE_APP_ADMIN] }
+        - { path: ^/[a-z]+/category/create, role: ROLE_APP_ADMIN }
+        - { path: ^/[a-z]+/category/new, role: ROLE_APP_ADMIN }
+        - { path: ^/[a-z]+/category/delete, role: ROLE_APP_ADMIN }
+        - { path: ^/[a-z]+/category/edit, role: ROLE_APP_ADMIN }
 
 
 

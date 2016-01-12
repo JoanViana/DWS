@@ -25,7 +25,7 @@ class Product
     /**
      * @var string
      * 
-     * @Assert\NotBlank()
+     * @Assert\NotBlank(message="as.nb")
      * @ORM\Column(name="name", type="string", length=255)
      */
     private $name;
@@ -34,7 +34,7 @@ class Product
      * @var float
      *
      * @ORM\Column(name="price", type="float")
-     * @Assert\NotBlank()
+     * @Assert\NotBlank(message="as.nb")
      */
     private $price;
 

@@ -5,8 +5,12 @@ namespace DWSBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use DWSBundle\Entity\Category;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
+/*
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Translation\Translator;
+use Symfony\Component\Translation\Loader\ArrayLoader;
+*/
 
 class CategoryController extends Controller
 {
@@ -66,8 +70,10 @@ class CategoryController extends Controller
 		 
 		$this->addAction($category);
 		 
-		$text = "Default category added. Id: ".$category->getId();
-		
+		/*
+		$text = $this->get('translator')->trans("Default category added. Id %categoryid%",
+			array('%categoryid%' => $category->getId()));
+		*/
 		/*
 		$repository = $this->getDoctrine()
 		->getRepository("DWSBundle:Category");
@@ -76,8 +82,8 @@ class CategoryController extends Controller
 		
 		$categories = $this->searchAllAction();
 		
-		return $this->render("DWSBundle:Category:list.html.twig", array("text" => $text,
-																			"categories" => $categories));
+		return $this->render("DWSBundle:Category:list.html.twig", array("category" => $category,
+																		"categories" => $categories));
 	}
 	
 	/**
@@ -101,9 +107,13 @@ class CategoryController extends Controller
     	
     	$this->addAction($category);
     	
-    	return new Response("Category ".$category->getName()." added with Id: ".$category->getId());
+		$categories = $this->searchAllAction();
+			
+		return $this->render("DWSBundle:Category:list.html.twig", array("category" => $category,"flashcategoryadd" => true,
+			"categories" => $categories,
+		));
+    	//return new Response("Category ".$category->getName()." added with Id: ".$category->getId());
     	
-        //return $this->render("DWSBundle::index.html.twig", array("name" => $name));
     }
     
     /**
@@ -124,9 +134,15 @@ class CategoryController extends Controller
 //     				"No product found for id ".$id
 //     				);
 //     		return new Response("There is not any category with id: ".$id);
-    
-			$text = "There is not any category with id: ".$id;
-			return $this->render("DWSBundle::index.html.twig", array("text" => $text));    	
+   
+			/*
+			$text = $this->get('translator')->trans("There is not any category with id %categoryid%",
+			array('%categoryid%' => $category->getId()));
+			*/
+			$categories = $this->searchAllAction();
+
+			return $this->render("DWSBundle:Category:list.html.twig", array("flashcategoryremove" => true, 
+				"category" => $category, "categories" => $categories));    	
     		
     	}
     
@@ -153,8 +169,8 @@ class CategoryController extends Controller
 // 					"No products found");
 // 			return new Response("There is not any category");
 	
-			$text = "There is not any category";
-			return $this->render("DWSBundle::index.html.twig", array("text" => $text));
+			//$text = $this->get('translator')->trans("There is not any category");
+			return $this->render("DWSBundle::index.html.twig", array("flashnocategories" => true));
 		}
 		
 // 		$list = "";
@@ -187,14 +203,19 @@ class CategoryController extends Controller
 // 					"No product found for id ".$id
 // 					);
 // 			return new Response("There is not any category with id: ".$id);
-	
-			$text = "There is not any category with id ".$id;
-			return $this->render("DWSBundle::index.html.twig", array("text" => $text));
+			/*
+			$text = $this->get('translator')->trans("There is not an category with id %categoryid%",
+			array('%categoryid%' => $category->getId()));
+			*/
+			return $this->render("DWSBundle::index.html.twig", array("flashnocategoryid" => true, 
+			"id" => $id));	
 		}
 		
 		$this->removeAction($category);
-	
-		$text = "Category ".$category->getName()." with Id ". $id." removed";
+		/*
+		$text = $this->get('translator')->trans("Category %categoryname% with Id %categoryid% removed",
+			array('%categoryname%' => $category->getName(), '%categoryid%' => $category->getId()));
+		*/
 		//return new Response("Category ".$category->getName()." with Id ". $id." removed");
 		/*
 		$repository = $this->getDoctrine()
@@ -203,8 +224,8 @@ class CategoryController extends Controller
 		*/
 		$categories = $this->searchAllAction();
 		 
-		return $this->render("DWSBundle:Category:list.html.twig", array("text" => $text,
-				"categories" => $categories));
+		return $this->render("DWSBundle:Category:list.html.twig", array("category" => $category, 
+							"flashcategoryremove" => true,"categories" => $categories));
 	}
 	
 	/**
@@ -214,13 +235,13 @@ class CategoryController extends Controller
 	
 		$category = new Category();
 	
-		$form = $this->createFormBuilder($category)
+		$form = $this->createFormBuilder($category, ['translation_domain' => 'DWSBundle'])
 			->add("name", "text", array(
 					//"placeholder" 	=> "Alimentacion",
 					"required"    	=> true,
 					"empty_data"  	=> null))
-		->add('save', 'submit', array('label' => 'Create Category'))
-    	->add('saveAndAdd', 'submit', array('label' => 'Save and Add'))
+		->add('save', 'submit', array('label' => 'action.save'))
+    	->add('saveAndAdd', 'submit', array('label' => 'action.saveAndAdd'))
     	
 		->getForm();
 	
@@ -232,15 +253,25 @@ class CategoryController extends Controller
 			$continueAction = $form->get('saveAndAdd')->isClicked();
 				
 			if($continueAction){
-				$text = "Category ".$category->getName()." with Id ". $category->getId()." added";
+				/*
+				$text = $this->get('translator')->trans("Category %categoryname% with Id %categoryid% added",
+					array('%categoryname%' => $category->getName(), '%categoryid%' => $category->getId()));
+				*/
 				return $this->render("DWSBundle:Category:new.html.twig", array(
-						"form" => $form->createView(),"text" => $text,
+						"form" => $form->createView(),"category" => $category,"flashcategoryadd" => true,
 				));
 			}
 
 			//return new Response("Category ".$category->getName()." with Id ". $category->getId()." added");
-			$text = "Category ".$category->getName()." with Id ". $category->getId()." added";
-			return $this->render("DWSBundle::index.html.twig", array("text" => $text, "success" => true));
+			/*
+			$text = $this->get('translator')->trans("Category %categoryname% with Id %categoryid% added",
+				array('%categoryname%' => $category->getName(), '%categoryid%' => $category->getId()));
+			*/
+			$categories = $this->searchAllAction();
+			
+			return $this->render("DWSBundle:Category:list.html.twig", array("category" => $category,"flashcategoryadd" => true,
+			"categories" => $categories,
+			));
 			
 		}
 	
@@ -256,13 +287,14 @@ class CategoryController extends Controller
 	{
 		$category = $this->searchByIdAction($id);
 
-		$form = $this->createFormBuilder($category)
+		$form = $this->createFormBuilder($category, ['translation_domain' => 'DWSBundle'])
 			->add("name", "text", array(
+					"label" => "category.name",
 					//"placeholder" 	=> "Alimentacion",
 					"required"    	=> true,
 					"empty_data"  	=> null,
 					"data"			=> $category->getName()))
-			->add('save', 'submit', array('label' => 'Update Category'))
+			->add('save', 'submit', array('label' => 'action.update'))
 			->getForm();
 	
 		$form->handleRequest($request);
@@ -272,10 +304,12 @@ class CategoryController extends Controller
 			$this->updateAction();
 			
 			//return new Response("Category ".$category->getName()." with Id ". $category->getId()." added");
-			$text = "Category ".$category->getName()." with Id ". $category->getId()." updated";
+			/*$text = $this->get('translator')->trans("Category %categoryname% with Id %categoryid% updated",
+				array('%categoryname%' => $category->getName(), '%categoryid%' => $category->getId()));
+			*/
 			$categories = $this->searchAllAction();
 			//return $this->redirectToRoute('cat_list', array("text" => $text,"categories" => $categories));
-			return $this->render("DWSBundle:Category:list.html.twig", array("text" => $text,
+			return $this->render("DWSBundle:Category:list.html.twig", array("category" => $category,"flashcategoryupdate" => true,
 				"categories" => $categories));
 		}
 	

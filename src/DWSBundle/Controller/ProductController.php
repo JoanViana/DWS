@@ -6,7 +6,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use DWSBundle\Entity\Product;
 use DWSBundle\Entity\Category;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 
 class ProductController extends Controller
@@ -16,13 +15,15 @@ class ProductController extends Controller
 	public static $price_default = 00.85;
 	public static $description_default = "Barra de pan de pueblo cocida a leña de 250 gr";
 	
-	private function initCategory(){
-	
+	private function initCategory()
+	{
+		$category = $this->searchByNameAction(CategoryController::$name_default);
+		/*
 		$repository = $this->getDoctrine()
 		->getRepository("DWSBundle:Category");
 		
 		$category = $repository->findOneByName(CategoryController::$name_default);
-
+		*/
 		if(!$category){
 			$category = new Category();
 			$category->setName(CategoryController::$name_default);
@@ -38,10 +39,12 @@ class ProductController extends Controller
 
 			}
 				
-				
+			$category->addAction($category);
+			/*
 			$em = $this->getDoctrine()->getManager();
 			$em->persist($category);
 			$em->flush();
+			*/
 		}
 		
 		return $category;
@@ -108,17 +111,22 @@ class ProductController extends Controller
     	$this->addAction($product);
     	
     	//return new Response("Default product added. Id: ".$product->getId());
-    	
-    	$text = "Default product added. Id: ".$product->getId();
+    	/*
+    	$text = $this->get('translator')->trans("Default product added. Id %productid%",
+			array('%productid%' => $product->getId()));
+		*/
     	//return new Response("Default product added. Id: ".$product->getId());
     	
+    	/*
     	$repository = $this->getDoctrine()
     	->getRepository("DWSBundle:Product");
     	
     	$products = $repository->findAll();
-    		
-    	return $this->render("DWSBundle:Product:list.html.twig", array("text" => $text,
-    			"products" => $products));
+    	*/
+    	$products = $this->searchAllAction();
+    	
+    	return $this->render("DWSBundle:Product:list.html.twig", array("product" => $product,
+    			"flashproductadd" => true, "products" => $products));
     }
     
     /**
@@ -164,18 +172,24 @@ class ProductController extends Controller
  	*/
 	public function showAction($id)
 	{
+		$product = $this->searchByIdAction($id);
+		/*
 	    $product = $this->getDoctrine()
 	        ->getRepository("DWSBundle:Product")
 	        ->find($id);
-	
+		*/
 	    if (!$product) {
 // 	        throw $this->createNotFoundException(
 // 	            "No product found for id ".$id
 // 	        );
 // 	        return new Response("There is not any product with id: ".$id);
-	         
-	        $text = "There is not any product with id: ".$id;
-			return $this->render("DWSBundle::index.html.twig", array("text" => $text));
+	        /* 
+	        $text = $this->get('translator')->trans("There is not any product with id %productid%",
+			array('%productid%' => $id));
+			*/
+			return $this->render("DWSBundle::index.html.twig", array("flashnoproductid" => true, 
+			"id" => $id));
+
 	    }
 	
 // 	    return new Response(
@@ -193,18 +207,24 @@ class ProductController extends Controller
  	*/
 	public function listAction()
 	{
+		/*
 		$repository = $this->getDoctrine()
 	        ->getRepository("DWSBundle:Product");
 	    
 	    $products = $repository->findAll();
+	    */
+	    $products = $this->searchAllAction();
 	
 		if (count($products) === 0) {
 // 			throw $this->createNotFoundException(
 // 					"Not found");
 // 			return new Response("There is not any product");
-	
-	        $text = "There is not any product";
-			return $this->render("DWSBundle::index.html.twig", array("text" => $text));		}
+			/*
+	        $text = $this->get('translator')->trans("There is not any product");
+			return $this->render("DWSBundle::index.html.twig", array("text" => $text));		
+			*/
+			return $this->render("DWSBundle::index.html.twig", array("flashnoproducts" => true));
+		}
 		
 // 		$list = "";
 		
@@ -229,18 +249,24 @@ class ProductController extends Controller
  	*/
 	public function listByCategoryAction($category)
 	{
+		$cat = $this->searchByNameAction($category);
+		/*
 		$repository = $this->getDoctrine()
 		->getRepository("DWSBundle:Category");
 		
+		
 		$cat = $repository->findOneByName($category);
-			
+		*/	
 		if (count($cat) === 0) {
 // 			throw $this->createNotFoundException(
 // 					"Not found");
 // 			return new Response("There is not any product named ".$category);
-	
-			$text = "There is not any product with id: ".$id;
-			return $this->render("DWSBundle::index.html.twig", array("text" => $text));
+			/*
+			$text = $this->get('translator')->trans("There is not any product with id %productid%",
+			array('%productid%' => $id));
+			*/
+			return $this->render("DWSBundle::index.html.twig", array("flashnocategoryname" => true,
+			"name" => $name));
 		}
 		
 		$products = $cat->getProducts();
@@ -258,7 +284,7 @@ class ProductController extends Controller
 	
 // 		return new Response($list);
 			
-		return $this->render("DWSBundle:Product:listbycat.html.twig", array("category" => $cat
+		return $this->render("DWSBundle:Product:listByCat.html.twig", array("category" => $cat
 		));
 	}
 	
@@ -276,9 +302,11 @@ class ProductController extends Controller
 // 			throw $this->createNotFoundException(
 // 					"Not found");
 // 			return new Response("There is not any category");
-	
-	        $text = "There is not any product";
-			return $this->render("DWSBundle::index.html.twig", array("text" => $text));		
+			/*
+	        $text = $this->get('translator')->trans("There is not any product");
+			
+			*/
+			return $this->render("DWSBundle::index.html.twig", array("flashnocategories" => true));
 		}
 		
 // 		$list = "";
@@ -305,7 +333,7 @@ class ProductController extends Controller
 // 		return new Response($list);
 
 		
-		return $this->render("DWSBundle:Product:listallbycat.html.twig", array("categories" => $categories
+		return $this->render("DWSBundle:Product:listAllByCat.html.twig", array("categories" => $categories
 		));
 	}
 	
@@ -314,31 +342,42 @@ class ProductController extends Controller
  	*/	
 	public function deleteAction($id)
 	{
+		/*
 		$product = $this->getDoctrine()
 			->getRepository("DWSBundle:Product")
 			->find($id);
+		*/
+		$product = $this->searchByIdAction($id);
 	
 		if (!$product) {
 // 			throw $this->createNotFoundException(
 // 					"No product found for id ".$id
 // 					);
 // 			return new Response("There is not any product with id: ".$id);
-	
-	        $text = "There is not any product with id: ".$id;
-			return $this->render("DWSBundle::index.html.twig", array("text" => $text));		}
+			return $this->render("DWSBundle::index.html.twig", array("flashnoproductid" => true, 
+			"id" => $id));
+	        /*
+	        $text = $this->get('translator')->trans("There is not any product with id %productid%",
+			array('%productid%' => $id));
+			*/
+
+		}
 		
 		$this->removeAction($product);
-	
-		$text = "Product ".$product->getName()." with Id ". $id." removed";
+		/*
+		$text = $this->get('translator')->trans("Product %productname% with Id %productid% removed",
+			array('%productname%' => $product->getName(), '%productid%' => $product->getId()));
 		//return new Response("Product ".$product->getName()." with Id ". $id." removed");
 		
 		$repository = $this->getDoctrine()
 			->getRepository("DWSBundle:Product");
 		
 		$products = $repository->findAll();
-		 
-		return $this->render("DWSBundle:Product:list.html.twig", array("text" => $text,
-																			"products" => $products
+		*/
+		$products = $this->searchAllAction();
+    	
+    	return $this->render("DWSBundle:Product:list.html.twig", array("product" => $product,
+    			"flashproductremove" => true, "products" => $products
 		));
 	}
 	
@@ -349,28 +388,32 @@ class ProductController extends Controller
 		
 		$product = new Product();
 	
-		$form = $this->createFormBuilder($product)
+		$form = $this->createFormBuilder($product, ['translation_domain' => 'DWSBundle'])
 			->add("name", "text", array(
 					//"placeholder" 	=> "Pan Bimbo Familiar",
+					'label' => 'product.name', 
 					"required"    	=> true,
 					"empty_data"  	=> null))
 			->add("category","entity",array(
 					"class" => "DWSBundle:Category",
+					'label' => 'product.category', 
 					"choice_label" => "name",
 					//"placeholder" 	=> "Alimentacion",
 					"required"    	=> true,
 					"empty_data"  	=> null))
 			->add("price", "money", array(
 					"currency"		=> "EUR",
+					'label' => 'product.price', 
 					//"placeholder" 	=> 01.99,
 					"scale"			=> 2,
 					"required"    	=> true,
 					"empty_data"  	=> null))
 			->add("description", "textarea", array(
+					'label' => 'product.description', 
 					//"placeholder" 	=> "Brief description",
 					"required"    	=> false))
-    		->add('save', 'submit', array('label' => 'Create Product'))
-    		->add('saveAndAdd', 'submit', array('label' => 'Save and Add'))
+    		->add('save', 'submit', array('label' => 'action.save' ))
+    		->add('saveAndAdd', 'submit', array('label' => 'action.saveAndAdd'))
 	
 			->getForm();
 		
@@ -382,15 +425,24 @@ class ProductController extends Controller
 			$continueAction = $form->get('saveAndAdd')->isClicked();
 				
 			if($continueAction){
-				$text = "Product ".$product->getName()." with Id ". $product->getId()." added";
+				/*
+				$text = $this->get('translator')->trans("Product %productname% with Id %productid% added",
+					array('%productname%' => $product->getName(), '%productid%' => $product->getId()));
+				*/
 				return $this->render("DWSBundle:Product:new.html.twig", array(
-						"form" => $form->createView(),"text" => $text,
+						"form" => $form->createView(),"flashproductadd" => true, "product" => $product,
 				));
 			}
 			
 			//return new Response("Product ".$product->getName()." with Id ". $product->getId()." added");
-			$text = "Product ".$product->getName()." with Id ". $product->getId()." added";
-			return $this->render("DWSBundle::index.html.twig", array("text" => $text, "success" => true));
+			/*
+			$text = $this->get('translator')->trans("Product %productname% with Id %productid% added",
+				array('%productname%' => $product->getName(), '%productid%' => $product->getId()));
+			*/
+			$products = $this->searchAllAction();
+    	
+    		return $this->render("DWSBundle:Product:list.html.twig", array("product" => $product,
+    			"flashproductadd" => true, "products" => $products));
 		}
 	
 		return $this->render("DWSBundle:Product:new.html.twig", array(
@@ -405,13 +457,15 @@ class ProductController extends Controller
 		
 		$product = $this->searchByIdAction($id);
 	
-		$form = $this->createFormBuilder($product)
+		$form = $this->createFormBuilder($product, ['translation_domain' => 'DWSBundle'])
 			->add("name", "text", array(
 					//"placeholder" 	=> "Pan Bimbo Familiar",
+					'label' => 'product.name', 
 					"required"    	=> true,
 					"empty_data"  	=> null,
 					"data"			=> $product->getName()))
 			->add("category","entity",array(
+					'label' => 'product.category', 
 					"class" => "DWSBundle:Category",
 					"choice_label" => "name",
 					//"placeholder" 	=> "Alimentacion",
@@ -419,6 +473,7 @@ class ProductController extends Controller
 					"empty_data"  	=> null,
 					"data"			=> $product->getCategory()))
 			->add("price", "money", array(
+					'label' => 'product.price', 
 					"currency"		=> "EUR",
 					//"placeholder" 	=> 01.99,
 					"scale"			=> 2,
@@ -426,10 +481,11 @@ class ProductController extends Controller
 					"empty_data"  	=> null,
 					"data"			=> $product->getPrice()))
 			->add("description", "textarea", array(
+					'label' => 'product.description', 
 					//"placeholder" 	=> "Brief description",
 					"required"    	=> false,
 					"data"			=> $product->getDescription()))
-    		->add('save', 'submit', array('label' => 'Update Product'))
+    		->add('save', 'submit', array('label' => 'action.update'))
 	
 			->getForm();
 		
@@ -440,10 +496,12 @@ class ProductController extends Controller
 			$this->updateAction();
 			
 			//return new Response("Product ".$product->getName()." with Id ". $product->getId()." added");
-			$text = "Product ".$product->getName()." with Id ". $product->getId()." updated";
+			/*$text = $this->get('translator')->trans("Product %productname% with Id %productid% updated",
+				array('%productname%' => $product->getName(), '%productid%' => $product->getId()));
+			*/
 			$products = $this->searchAllAction();
-			return $this->render("DWSBundle:Product:list.html.twig", array("text" => $text,
-				"products" => $products));
+			return $this->render("DWSBundle:Product:list.html.twig", array("product" => $product,
+				"flashproductupdate" => true, "products" => $products));
 		}
 	
 		return $this->render("DWSBundle:Product:edit.html.twig", array(
@@ -486,14 +544,14 @@ class ProductController extends Controller
 		
 		return $repository->findAll();
 	}
-	/*
+	
 	private function searchByNameAction($name) {
 	
 		$repository = $this->getDoctrine()
-			->getRepository("DWSBundle:Product");
+			->getRepository("DWSBundle:Category");
 		
-		return $repository->findOneByName(self::$name_default);
+		return $repository->findOneByName($name);
 	}
-	*/
+	
 
 }

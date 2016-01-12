@@ -26,7 +26,7 @@ class Person
     /**
      * @var string
      *
-     * @Assert\NotBlank()
+     * @Assert\NotBlank(message="as.nb")
      * @ORM\Column(name="name", type="string", length=255)
      */
     private $name;
@@ -39,16 +39,17 @@ class Person
      * @Assert\Range(
      *      min = 18,
      *      max = 90,
-     *      minMessage = "You must be at least {{ limit }} years old",
-     *      maxMessage = "You cannot be older than {{ limit }} years old")
+     *      minMessage = "as.age.min",
+     *      maxMessage = "as.age.max",
+     *      invalidMessage = "as.invalid")
      */
     private $age;
 
     /**
      * @var \Date
      * 
-     * @Assert\NotBlank()
-     * @Assert\Date()
+     * @Assert\NotBlank(message = "as.nb")
+     * @Assert\Date(message = "as.date")
      * @ORM\Column(name="birthDate", type="date")
      */
     private $birthDate;
@@ -61,26 +62,26 @@ class Person
      * @Assert\Range(
      *      min = 100,
      *      max = 300,
-     *      minMessage = "You must be at least {{ limit }}cm height",
-     *      maxMessage = "You cannot be taller than {{ limit }}cm height")
-     * 
+     *      minMessage = "as.height.min", 
+     *      maxMessage = "as.height.max",
+     *      invalidMessage = "as.invalid")
+     *  
      */
     private $height;
 
     /**
      * @var string
      * 
-     * @Assert\NotBlank()
+     * @Assert\NotBlank(message="as.nb")
      * @ORM\Column(name="email", type="string", length=255)
-     * @Assert\Email(
-     *     message = "The email '{{ value }}' is not a valid email.")
+     * @Assert\Email(message = "as.email")
      */
     private $email;
     
     /**
      * @var string
      * 
-     * @Assert\NotBlank()
+     * @Assert\NotBlank(message="as.nb")
      * @ORM\Column(name="phone", type="integer")
      * @Assert\Regex("/\d{9,12}/")
      */
@@ -89,10 +90,9 @@ class Person
     /**
      * @var string
      * 
-     * @Assert\NotBlank()
+     * @Assert\NotBlank(message="as.nb")
      * @ORM\Column(name="gender", type="string", length=255, nullable=true)
-     * @Assert\Choice(
-     * 			choices = { "m","f" })
+     * @Assert\Choice(choices = { "m","f" })
      */
     private $gender;
 
@@ -101,7 +101,11 @@ class Person
      *
      * @ORM\Column(name="descends", type="integer", nullable=true)
      * 
-     * @Assert\Range(min = 0, max = 20)
+     * @Assert\Range(   min = 0, 
+     *                  max = 20,
+     *                  minMessage = "as.decends.min", 
+     *                  maxMessage = "as.descends.max",
+     *                  invalidMessage = "as.invalid"))
      */
     private $descends;
 
@@ -137,7 +141,7 @@ class Person
      *
      * @ORM\Column(name="personalWebSite", type="string", length=255, nullable=true)
      * 
-     * @Assert\Url()
+     * @Assert\Url(message="as.url")
      */
     private $personalWebSite;
 
@@ -148,7 +152,7 @@ class Person
      * 
      * @Assert\CardScheme(
      * 			schemes={"VISA","MASTERCARD","MAESTRO"},
-     *     		message="Your credit card number is invalid.")
+     *     		message="as.card")
      */
     private $cardNumber;
 
@@ -157,8 +161,7 @@ class Person
      *
      * @ORM\Column(name="IBAN", type="string", length=255, nullable=true)
      * 
-     * @Assert\Iban(
-     * 			message="This is not a valid International Bank Account Number (IBAN)")
+     * @Assert\Iban(message="as.iban")
      */
     private $iBAN;
 

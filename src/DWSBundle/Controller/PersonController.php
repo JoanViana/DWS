@@ -5,7 +5,6 @@ namespace DWSBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use DWSBundle\Entity\Person;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use \DateTime;
 
@@ -105,33 +104,42 @@ class PersonController extends Controller
 		 
 		$this->addAction($person);
 		 
-		$text = "Default person added. Id: ".$person->getId();
 		//return new Response("Default person added. Id: ".$person->getId());
-		
+		/*
+		$text = $this->get('translator')->trans("Default person added. Id %personid%",
+				array('%personid%' => $person->getId()));
+
 		$repository = $this->getDoctrine()
 		->getRepository("DWSBundle:Person");
 		
 		$persons = $repository->findAll();
-		 
-		return $this->render("DWSBundle:Person:list.html.twig", array("text" => $text,
+		 */
+		$persons = $this->searchAllAction();
+		return $this->render("DWSBundle:Person:list.html.twig", array("person" => $person,
+																		"flashpersonadd" => true,
 																			"persons" => $persons));
 	}
 	
 	public function listAction()
 	{
+		/*
 		$repository = $this->getDoctrine()
 	        ->getRepository("DWSBundle:Person");
 		
 	    $persons = $repository->findAll();
-	
+		*/
+		$persons = $this->searchAllAction();
+		
 		if (count($persons) === 0) {
 			/*
 			throw $this->createNotFoundException(
 					"No persons found");
 			return new Response("There is not any person");
 			*/
-			$text = "There is not any person";
-			return $this->render("DWSBundle::index.html.twig", array("text" => $text));
+			/*
+			$text = $this->get('translator')->trans("There is not any person");
+			*/
+			return $this->render("DWSBundle::index.html.twig", array("flashnopersons" => true));
 		}
 		
 		/*
@@ -166,10 +174,13 @@ class PersonController extends Controller
 
 	public function deleteAction($id)
 	{
+		/*
 		$person = $this->getDoctrine()
 		->getRepository("DWSBundle:Person")									
 		->find($id);
-	
+		*/
+		$person = $this->searchByIdAction($id);
+		
 		if (!$person) {
 			/*
 			throw $this->createNotFoundException(
@@ -177,31 +188,41 @@ class PersonController extends Controller
 					);
 			return new Response("There is not any person with id: ".$id);
 			*/
-			$text = "There is not any person with id: ".$id;
-			return $this->render("DWSBundle::index.html.twig", array("text" => $text));
+			/*
+			$text = $this->get('translator')->trans("There is not any person with id %personid%",
+				array('%personid%' => $person->getId()));
+			*/
+			return $this->render("DWSBundle::index.html.twig", array("flashnopersonid" => true, 
+			"id" => $id));	
 		}
 		
 		$this->removeAction($person);
-		
-		$text = "Person ".$person->getName()." with Id ". $id." removed";
+		/*			
+		$text = $this->get('translator')->trans('Person %personname% with Id %personid% removed',
+				array('%personname%' => $person->getName(), '%personid%' => $person->getId()));
+		*/
 		//return new Response("Person ".$person->getName()." with Id ". $id." removed");
 		
+		/*
 		$repository = $this->getDoctrine()
 			->getRepository("DWSBundle:Person");
 		
 		$persons = $repository->findAll();
-		 
-		return $this->render("DWSBundle:Person:list.html.twig", array("text" => $text,
-																			"persons" => $persons
-		));
+		*/
+		$persons = $this->searchAllAction();
+		return $this->render("DWSBundle:Person:list.html.twig", array("person" => $person,
+																		"flashpersonremove" => true,
+																			"persons" => $persons));
 	}
 	
 	public function showAction($id)
 	{
+		/*
 		$person = $this->getDoctrine()
 		->getRepository("DWSBundle:Person")
 		->find($id);
-	
+		*/
+		$person = $this->searchByIdAction($id);
 		if (!$person) {
 			/*
 			throw $this->createNotFoundException(
@@ -209,8 +230,13 @@ class PersonController extends Controller
 					);
 			return new Response("There is not any person with id: ".$id);
 			*/
-			$text = "There is not any person with id: ".$id;
-			return $this->render("DWSBundle::index.html.twig", array("text" => $text));
+			/*		
+			$text = $this->get('translator')->trans("There is not any person with id %personid%",
+				array('%personid%' => $person->getId()));
+			*/
+			return $this->render("DWSBundle::index.html.twig", array("flashnopersonid" => true, 
+			"id" => $id));		
+			
 		}
 	
 		/*		
@@ -239,51 +265,61 @@ class PersonController extends Controller
 	
 		$person = new Person();
 	
-		$form = $this->createFormBuilder($person)
+		$form = $this->createFormBuilder($person, ['translation_domain' => 'DWSBundle'])
 			->add("name", "text", array(
 					//"placeholder" 	=> "John Smith",
+					'label' => 'person.name',
 					"required"    	=> true,
 					"empty_data"  	=> null))
 			->add("age", "integer", array(
 					//"placeholder" 	=> 27,
 					//"data"			=> 18,
+					'label' => 'person.age',
 					"required"    	=> false))
 			->add("birthDate", "date", array(
 					//"placeholder" 	=> array("year" => "1988", "month" => "05", "day" => "27"),
 					"format" 		=> "yyyy-MM-dd",
+					'label' => 'person.birthDate',
 					"required"    	=> true,
 					"empty_data"  	=> null))
 			->add("height", "integer", array(
 					//"placeholder" 	=> 178,
+					'label' => 'person.height',
 					"required"    	=> false))
 			->add("email", "email", array(
 					//"placeholder" 	=> "example@domain.com",
+					'label' => 'person.email',
 					"required"    	=> true,
 					"empty_data"  	=> null))
 			->add("phone", "number", array(
 					//"placeholder" 	=> 654123123,
+					'label' => 'person.phone',
 					"required"    	=> true,
 					"empty_data"  	=> null))
 			->add("gender", "choice", array(
 					//"placeholder" 	=> "Femenino",
+					'label' => 'person.gender',
 					"required"    	=> true,
-    				"choices" => array("Femenino" => "f", "Masculino" => "m"),
+    				"choices" => array("form.ch.female" => "f", "form.ch.male" => "m"),
     				"choices_as_values" => true,
 					"empty_data"  	=> null))
 			->add("descends", "number", array(
+					'label' => 'person.descends',
 					//"placeholder" 	=> 2,
 					"scale"			=> 0,
 					"required"    	=> false))
 			->add("vehicle", "checkbox", array(
-					"label"    => "¿Vehículo propio?",
+					'label' => 'person.vehicle',
 					"required"    	=> false))
 			->add("preferredLanguage","choice", array(
 					//"placeholder" 	=> "Programming Language",
 					"required"    	=> false,
+					'label' => 'person.preferredLanguage',
 					"multiple" 		=> false,
 					"expanded" 		=> false,
     				"choices" 		=> array("Java", "C", "C++", "Python", "C#", "PHP")))
 			->add("englishLevel", "choice", array(
+					'label' => 'person.englishLevel',
 					//"required"    	=> false,
 					"data"			=> 1,
 					"multiple" 		=> false,
@@ -291,16 +327,19 @@ class PersonController extends Controller
     				"choices" 		=> array("A1" => 1, "A2" => 2, "B1" => 3, "B2" => 4, "C1" => 5, "C2" => 6),
     				"choices_as_values" => true))
 			->add("personalWebSite", "url", array(
+					'label' => 'person.personalWebSite',
 					//"placeholder" 	=> "http://www.example.com",
 					"required"    	=> false))
 			->add("cardNumber", "text", array(
+					'label' => 'person.cardNumber',
 					//"placeholder" 	=> "5555555555554444",
 					"required"    	=> false))
 			->add("IBAN", "text", array(
+					'label' => 'person.iban',
 					//"placeholder" 	=> "ES9121000418450200051332",
 					"required"    	=> false))
-			->add('save', 'submit', array('label' => 'Create Person'))
-    		->add('saveAndAdd', 'submit', array('label' => 'Save and Add'))
+			->add('save', 'submit', array('label' => 'action.save'))
+    		->add('saveAndAdd', 'submit', array('label' => 'action.saveAndAdd'))
 
 			->getForm();
 	
@@ -313,16 +352,26 @@ class PersonController extends Controller
 			$continueAction = $form->get('saveAndAdd')->isClicked();
 			
 			if($continueAction){
-				$text = "Person ".$person->getName()." with Id ". $person->getId()." added";
+				/*
+				$text = $this->get('translator')->trans("Person %personname% with Id %personid% added",
+				array('%personname%' => $person->getName(), '%personid%' => $person->getId()));
+				*/
 				return $this->render("DWSBundle:Person:new.html.twig", array(
-						"form" => $form->createView(),"text" => $text,
+						"form" => $form->createView(),"person" => $person,"flashpersonadd" => true,
 				));
 			}
 
 			//return new Response("Person ".$person->getName()." with Id ". $person->getId()." added");
-			$text = "Person ".$person->getName()." with Id ". $person->getId()." added";
-			return $this->render("DWSBundle::index.html.twig", array("text" => $text, "success" => true));
-	
+				/*
+				$text = $this->get('translator')->trans("Person %personname% with Id %personid% added",
+				array('%personname%' => $person->getName(), '%personid%' => $person->getId()));
+				return $this->render("DWSBundle::index.html.twig", array("text" => $text, "success" => true));
+				*/
+				$persons = $this->searchAllAction();
+			
+				return $this->render("DWSBundle:Person:list.html.twig", array("person" => $person,"flashpersonadd" => true,
+				"persons" => $persons,
+				));
 		}
 	
 		return $this->render("DWSBundle:Person:new.html.twig", array(
@@ -342,5 +391,20 @@ class PersonController extends Controller
 		$em = $this->getDoctrine()->getManager();
 		$em->remove($person);
 		$em->flush();
+	}
+	
+	private function searchByIdAction($id) {
+	
+    	return $this->getDoctrine()
+	    	->getRepository("DWSBundle:Person")
+	    	->find($id);
+	}
+	
+	private function searchAllAction() {
+	
+		$repository = $this->getDoctrine()
+			->getRepository("DWSBundle:Person");
+		
+		return $repository->findAll();
 	}
 }
