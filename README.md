@@ -24,9 +24,10 @@ A generic bundle which implements basics of:
 5. Submit a pull request :D
 
 ## Others
-Cloud 9 Workspace:  https://c9.io/joanviana/dws
-Heroku Git:         git@heroku.com:dws-joanviana.git
-Heroku Web:         https://dws-joanviana.herokuapp.com/
+
+ * Cloud 9 Workspace:  https://c9.io/joanviana/dws
+ * Heroku Git:         git@heroku.com:dws-joanviana.git
+ * Heroku Web:         https://dws-joanviana.herokuapp.com/
 
 ## Author: 		
 Joan Dídac Viana Fons <joanvianafons@gmail.com> 
