@@ -27,9 +27,9 @@ flash:
     error: 'Error!'
     info: 'Notificación:'
     no:
-        products: 'No existen productos almacenados, puedes crear una por defecto con la ruta /product/create'
-        persons: 'No existen personas almacenadas, puedes crear una por defecto con la ruta /person/create'
-        categories: 'No existen categorias almacenadas, puedes crear una por defecto con la ruta /category/create'
+        products: 'No existen productos almacenados, puedes crear una por defecto'
+        persons: 'No existen personas almacenadas, puedes crear una por defecto'
+        categories: 'No existen categorias almacenadas, puedes crear una por defecto'
         category:
             id: 'No existe la categoría con id %categoryid%'
             name: 'No existe la categoría con nombre %categoryname%'
@@ -108,7 +108,9 @@ product:
     listAllByCat:
         title: 'Listado de productos por categoría' 
         header: 'Listado de productos por categoría' 
-
+    create:
+        title: 'Crear producto por defecto'
+        header: 'Crear producto por defecto'
 category: 
     id:  'Id' 
     name:  'Nombre' 
@@ -123,7 +125,10 @@ category:
         header: 'Edición de la categoría %categoryname%'
     show:
         title: 'Detalles de la categoría %categoryname%' 
-        header: 'Detalles de la categoría %categoryname%'   
+        header: 'Detalles de la categoría %categoryname%'  
+    create:
+        title: 'Crear categoría por defecto'
+        header: 'Crear categoría por defecto'
 
 person: 
     id:  'Id' 
@@ -153,6 +158,9 @@ person:
     show:
         title: 'Detalles de la persona %personname%' 
         header: 'Detalles de la persona %personname%'    
+    create:
+        title: 'Crear persona por defecto'
+        header: 'Crear persona por defecto'
 
 user: 
     id:  'Id' 
@@ -173,4 +181,5 @@ user:
         header: 'Edición del usuario %username%'
     show:
         title: 'Detalles del usuario %username%' 
-        header: 'Detalles del usuario %username%'    
+        header: 'Detalles del usuario %username%'
+userdefaulttitle: 'Credenciales por defecto'

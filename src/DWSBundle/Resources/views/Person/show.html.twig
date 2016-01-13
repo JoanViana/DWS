@@ -81,12 +81,12 @@
 			                        <a href="{{ path('per_list', {'id': person.id}) }}" class="btn btn-sm btn-info">
 			                            <th>{{ 'action.show'|trans }}</th>
 			                        </a>
-			                        
-			                        <a href="{{ path('per_edit', {'id': person.id}, {'person': person, 'action': null}) }}" class="btn btn-sm btn-primary">
-			                            {{ 'action.email'|trans }}
-			                        </a>
 			                        #}
-			                        <a href="{{ path('per_delete', {'id': person.id}) }}" class="btn btn-sm btn-danger btn-delete">
+			                        <a href="{{ path('per_edit', {'id': person.id}) }}" class="btn btn-sm btn-primary">
+			                            {{ 'action.edit'|trans }}
+			                        </a>
+			                        
+			                        <a href="{{ path('per_delete', {'id': person.id}) }}" class="btn btn-sm btn-danger">
 			                            {{ 'action.delete'|trans }}
 			                        </a>
 				                </td>

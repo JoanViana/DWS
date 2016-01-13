@@ -1,17 +1,17 @@
 as:
-    nb: 'Este campo no puede estar vacío'
-    invalid: 'Este no es un valor válido'
-    date: 'Introduce una fecha válida'
-    email: "El email '{{ value }}' no es un email válido"
-    url: "La url '{{ value }}'no es una url válida"
-    card: "El número de tarjeta introducido no es válido"
-    iban: "El IBAN introducido no es válido"
+    nb: 'This field cannot be empty'
+    invalid: 'This field cannot be empty'
+    date: 'Type a valid date'
+    email: "The email '{{ value }}' is not valid"
+    url: "The url '{{ value }}'is not valid"
+    card: "The card number is not valid"
+    iban: "The IBAN is not valid"
     height:
-        min: 'La altura mínima es {{ limit }} cm'
-        max: 'La altura máxima es {{ limit }} cm'
+        min: 'The minimum height is {{ limit }} cm'
+        max: 'The maximum height is {{ limit }} cm'
     age:
-        min: 'La edad mínima es {{ limit }} años'
-        max: 'La edad máxima es {{ limit }} años'   
+        min: 'The minimum age is {{ limit }} years old'
+        max: 'The maximum height is {{ limit }} years dold'   
     descends:
-        min: 'El número mínimo de descendientes es {{ limit }}'
-        max: 'El número máximo de descendientes es {{ limit }}'
+        min: 'The minimum descends is {{ limit }}'
+        max: 'The maximum descends is {{ limit }}'

@@ -27,9 +27,9 @@ flash:
     error: 'Error!'
     info: 'Notification:'
     no:
-        products: 'There is not any products stored, yo can create the default by /product/create'
-        persons: 'There is not any person stored, yo can create the default by /product/create'
-        categories: 'There is not any category stored, yo can create the default by /product/create'
+        products: 'There is not any products stored, you can create a default one'
+        persons: 'There is not any person stored, you can create a default one'
+        categories: 'There is not any category stored, you can create a default one'
         category:
             id: 'There is not any category with id %categoryid%'
             name: 'There is not any category with name %categoryname%'
@@ -108,6 +108,9 @@ product:
     listAllByCat:
         title: 'List products by category' 
         header: 'List products by category' 
+    create:
+        title: 'Create default product'
+        header: 'Create default product'
 
 category: 
     id:  'Id' 
@@ -123,7 +126,10 @@ category:
         header: 'Edit category %categoryname%'
     show:
         title: 'Details of category %categoryname%' 
-        header: 'Details of category %categoryname%'   
+        header: 'Details of category %categoryname%' 
+    create:
+        title: 'Create default category'
+        header: 'Create default category'
 
 person: 
     id:  'Id' 
@@ -152,7 +158,10 @@ person:
         header: 'Edit person %personname%'
     show:
         title: 'Details of person %personname%' 
-        header: 'Details of person %personname%'    
+        header: 'Details of person %personname%' 
+    create:
+        title: 'Create default person'
+        header: 'Create default person'
 
 user: 
     id:  'Id' 
@@ -173,4 +182,5 @@ user:
         header: 'Edit user %username%'
     show:
         title: 'Details of user %username%' 
-        header: 'Details of user %username%'    
+        header: 'Details of user %username%'
+userdefaulttitle: 'Deafult credentials'

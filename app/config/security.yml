@@ -15,7 +15,7 @@ security:
                     user:
                         password: 1234
                         roles: 'ROLE_USER'
-                    user2:
+                    user@example.com:
                         password: 1234
                         roles: 'ROLE_USER'
                     admin:

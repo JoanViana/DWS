@@ -8,403 +8,373 @@ use DWSBundle\Entity\Person;
 use Symfony\Component\HttpFoundation\Request;
 use \DateTime;
 
-class PersonController extends Controller
-{
-	public static $id_default = 1;
-	public static $name_default = "Joan Dídac Viana Fons";
-	public static $age_default = 27;
-	public static $birthDate_default = "1988-07-30";
-	public static $height_default = 175;
-	public static $email_default = "joanviana.wembail@gmail.com";
-	public static $phone_default = 663328199;
-	public static $gender_default = "m";
-	public static $descends_default = 2;
-	public static $vehicle_default = false;
-	public static $preferredLanguage_default = "C++";
-	public static $englishLevel_default = 4;
-	public static $personalWebSite_default = "http://www.joanviana.hol.es";
-	public static $cardNumber_default = "5555555555554444";
-	public static $iban_default = "ES9121000418450200051332";
-	/*
-	private function initPerson(){
-		
-		$repository = $this->getDoctrine()
-		->getRepository("DWSBundle:Person");
-		
-		$person= $repository->findOneByName(self::$name_default);
-		
-		if(!$person){
-			$person = new Person();
-			$person->setName(self::$name_default);
-			$person->setAge(self::$age_default);
-			$date = new DateTime;
-			$birth = $date::createFromFormat("yyyy-MM-dd", self::$birthDate_default);
-			$person->setBirthDate($birth);
-			$person->setHeight(self::$height_default);
-			$person->setEmail(self::$email_default);
-			$person->setPhone(self::$phone_default);
-			$person->setGender(self::$gender_default);
-			$person->setDescends(self::$descends_default);
-			$person->setVehicle(self::$vehicle_default);
-			$person->setPreferredLanguage(self::$preferredLanguage_default);
-			$person->setEnglishLevel(self::$englishLevel_default);
-			$person->setPersonalWebSite(self::$personalWebSite_default);
-			$person->setCardNumber(self::$cardNumber_default);
-			$person->setIBAN(self::$iban_default);
-			
-			$validator = $this->get("validator");
-			$errors = $validator->validate($person);
-			
-			if (count($errors) > 0) {
+class PersonController extends Controller {
 
-				$errorsString = (string) $errors;
-			
-				return $this->render("DWSBundle::index.html.twig", array("text" => $errorsString));
+    public static $id_default = 1;
+    public static $name_default = "Joan Dídac Viana Fons";
+    public static $age_default = 27;
+    public static $birthDate_default = "1988-07-30";
+    public static $height_default = 175;
+    public static $email_default = "joanviana.wembail@gmail.com";
+    public static $phone_default = 666999666;
+    public static $gender_default = "m";
+    public static $descends_default = 2;
+    public static $vehicle_default = false;
+    public static $preferredLanguage_default = "C++";
+    public static $englishLevel_default = 4;
+    public static $personalWebSite_default = "http://www.joanviana.hol.es";
+    public static $cardNumber_default = "5555555555554444";
+    public static $iban_default = "ES9121000418450200051332";
+    
+    /**
+     * @Security("has_role('ROLE_APP_ADMIN')")
+     */
+    public function createStaticAction() {
+        $person = new Person();
+        $person->setName(self::$name_default);
+        $person->setAge(self::$age_default);
+        $date = new DateTime(self::$birthDate_default);
+        $person->setBirthDate($date);
+        $person->setHeight(self::$height_default);
+        $person->setEmail(self::$email_default);
+        $person->setPhone(self::$phone_default);
+        $person->setGender(self::$gender_default);
+        $person->setDescends(self::$descends_default);
+        $person->setVehicle(self::$vehicle_default);
+        $person->setPreferredLanguage(self::$preferredLanguage_default);
+        $person->setEnglishLevel(self::$englishLevel_default);
+        $person->setPersonalWebSite(self::$personalWebSite_default);
+        $person->setCardNumber(self::$cardNumber_default);
+        $person->setIBAN(self::$iban_default);
 
-			}
-			
-			 
-			$this->addAction($person);
-		}
-		
-		return $person;
-	}
-	*/
-	
-	public function createStaticAction()
-	{
-		$person = new Person();
-		$person->setName(self::$name_default);
-		$person->setAge(self::$age_default);
-		$date = new DateTime(self::$birthDate_default);
-		$person->setBirthDate($date);
-		$person->setHeight(self::$height_default);
-		$person->setEmail(self::$email_default);
-		$person->setPhone(self::$phone_default);
-		$person->setGender(self::$gender_default);
-		$person->setDescends(self::$descends_default);
-		$person->setVehicle(self::$vehicle_default);
-		$person->setPreferredLanguage(self::$preferredLanguage_default);
-		$person->setEnglishLevel(self::$englishLevel_default);
-		$person->setPersonalWebSite(self::$personalWebSite_default);
-		$person->setCardNumber(self::$cardNumber_default);
-		$person->setIBAN(self::$iban_default);
-		
-		$validator = $this->get("validator");
-		$errors = $validator->validate($person);
-		
-		if (count($errors) > 0) {
+        $validator = $this->get("validator");
+        $errors = $validator->validate($person);
 
-			$errorsString = (string) $errors;
-		
-			return $this->render("DWSBundle::index.html.twig", array("text" => $errorsString));
+        if (count($errors) > 0) {
 
-		}
-		
-		 
-		$this->addAction($person);
-		 
-		//return new Response("Default person added. Id: ".$person->getId());
-		/*
-		$text = $this->get('translator')->trans("Default person added. Id %personid%",
-				array('%personid%' => $person->getId()));
+            $errorsString = (string) $errors;
 
-		$repository = $this->getDoctrine()
-		->getRepository("DWSBundle:Person");
-		
-		$persons = $repository->findAll();
-		 */
-		$persons = $this->searchAllAction();
-		return $this->render("DWSBundle:Person:list.html.twig", array("person" => $person,
-																		"flashpersonadd" => true,
-																			"persons" => $persons));
-	}
-	
-	public function listAction()
-	{
-		/*
-		$repository = $this->getDoctrine()
-	        ->getRepository("DWSBundle:Person");
-		
-	    $persons = $repository->findAll();
-		*/
-		$persons = $this->searchAllAction();
-		
-		if (count($persons) === 0) {
-			/*
-			throw $this->createNotFoundException(
-					"No persons found");
-			return new Response("There is not any person");
-			*/
-			/*
-			$text = $this->get('translator')->trans("There is not any person");
-			*/
-			return $this->render("DWSBundle::index.html.twig", array("flashnopersons" => true));
-		}
-		
-		/*
-		
-		$list = "";		
-		foreach($persons as $person){
-			
-			$list .= "Id: ".$person->getId().
-				"\n Name: ".$person->getName().
-				"\n Age: ".$person->getAge().
-				"\n BirthDate: ".$person->getBirthDate()->format("yyyy-MM-dd").
-				"\n Height: ".$person->getHeight().
-				"\n Email: ".$person->getEmail().
-				"\n Phone: ".$person->getPhone().
-				"\n Gender: ".$person->getGender().
-				"\n Descends: ".$person->getDescends().
-				"\n Vehicle: ".$person->getVehicle().
-				"\n PeferredLanguage: ".$person->getPreferredLanguage().
-				"\n EnglishLevel: ".$person->getEnglishLevel().
-				"\n PersonalWebSite: ".$person->getPersonalWebSite().
-				"\n CardNumber: ".$person->getCardNumber().
-				"\n IBAN: ".$person->getIBAN()."\n\n";
-		}
-		
-		return new Response($list);
-		*/
-		 
-		return $this->render("DWSBundle:Person:list.html.twig", array("persons" => $persons
-		));
-	}
-	
+            return $this->render("DWSBundle::index.html.twig", array("text" => $errorsString));
+        }
 
-	public function deleteAction($id)
-	{
-		/*
-		$person = $this->getDoctrine()
-		->getRepository("DWSBundle:Person")									
-		->find($id);
-		*/
-		$person = $this->searchByIdAction($id);
-		
-		if (!$person) {
-			/*
-			throw $this->createNotFoundException(
-					"No person found for id ".$id
-					);
-			return new Response("There is not any person with id: ".$id);
-			*/
-			/*
-			$text = $this->get('translator')->trans("There is not any person with id %personid%",
-				array('%personid%' => $person->getId()));
-			*/
-			return $this->render("DWSBundle::index.html.twig", array("flashnopersonid" => true, 
-			"id" => $id));	
-		}
-		
-		$this->removeAction($person);
-		/*			
-		$text = $this->get('translator')->trans('Person %personname% with Id %personid% removed',
-				array('%personname%' => $person->getName(), '%personid%' => $person->getId()));
-		*/
-		//return new Response("Person ".$person->getName()." with Id ". $id." removed");
-		
-		/*
-		$repository = $this->getDoctrine()
-			->getRepository("DWSBundle:Person");
-		
-		$persons = $repository->findAll();
-		*/
-		$persons = $this->searchAllAction();
-		return $this->render("DWSBundle:Person:list.html.twig", array("person" => $person,
-																		"flashpersonremove" => true,
-																			"persons" => $persons));
-	}
-	
-	public function showAction($id)
-	{
-		/*
-		$person = $this->getDoctrine()
-		->getRepository("DWSBundle:Person")
-		->find($id);
-		*/
-		$person = $this->searchByIdAction($id);
-		if (!$person) {
-			/*
-			throw $this->createNotFoundException(
-					"No person found for id ".$id
-					);
-			return new Response("There is not any person with id: ".$id);
-			*/
-			/*		
-			$text = $this->get('translator')->trans("There is not any person with id %personid%",
-				array('%personid%' => $person->getId()));
-			*/
-			return $this->render("DWSBundle::index.html.twig", array("flashnopersonid" => true, 
-			"id" => $id));		
-			
-		}
-	
-		/*		
-		return new Response(
-			"Id: ".$person->getId().
-			"\n Name: ".$person->getName().
-			"\n Age: ".$person->getAge().
-			"\n BirthDate: ".$person->getBirthDate()->format("yyyy-MM-dd").
-			"\n Height: ".$person->getHeight().
-			"\n Email: ".$person->getEmail().
-			"\n Phone: ".$person->getPhone().
-			"\n Gender: ".$person->getGender().
-			"\n Descends: ".$person->getDescends().
-			"\n Vehicle: ".$person->getVehicle().
-			"\n PeferredLanguage: ".$person->getPreferredLanguage().
-			"\n EnglishLevel: ".$person->getEnglishLevel().
-			"\n PersonalWebSite: ".$person->getPersonalWebSite().
-			"\n CardNumber: ".$person->getCardNumber().
-			"\n IBAN: ".$person->getIBAN()."\n\n");
-		*/
-		 
-		return $this->render("DWSBundle:Person:show.html.twig", array("person" => $person));
-	}
-	
-	public function newAction(Request $request) {
-	
-		$person = new Person();
-	
-		$form = $this->createFormBuilder($person, ['translation_domain' => 'DWSBundle'])
-			->add("name", "text", array(
-					//"placeholder" 	=> "John Smith",
-					'label' => 'person.name',
-					"required"    	=> true,
-					"empty_data"  	=> null))
-			->add("age", "integer", array(
-					//"placeholder" 	=> 27,
-					//"data"			=> 18,
-					'label' => 'person.age',
-					"required"    	=> false))
-			->add("birthDate", "date", array(
-					//"placeholder" 	=> array("year" => "1988", "month" => "05", "day" => "27"),
-					"format" 		=> "yyyy-MM-dd",
-					'label' => 'person.birthDate',
-					"required"    	=> true,
-					"empty_data"  	=> null))
-			->add("height", "integer", array(
-					//"placeholder" 	=> 178,
-					'label' => 'person.height',
-					"required"    	=> false))
-			->add("email", "email", array(
-					//"placeholder" 	=> "example@domain.com",
-					'label' => 'person.email',
-					"required"    	=> true,
-					"empty_data"  	=> null))
-			->add("phone", "number", array(
-					//"placeholder" 	=> 654123123,
-					'label' => 'person.phone',
-					"required"    	=> true,
-					"empty_data"  	=> null))
-			->add("gender", "choice", array(
-					//"placeholder" 	=> "Femenino",
-					'label' => 'person.gender',
-					"required"    	=> true,
-    				"choices" => array("form.ch.female" => "f", "form.ch.male" => "m"),
-    				"choices_as_values" => true,
-					"empty_data"  	=> null))
-			->add("descends", "number", array(
-					'label' => 'person.descends',
-					//"placeholder" 	=> 2,
-					"scale"			=> 0,
-					"required"    	=> false))
-			->add("vehicle", "checkbox", array(
-					'label' => 'person.vehicle',
-					"required"    	=> false))
-			->add("preferredLanguage","choice", array(
-					//"placeholder" 	=> "Programming Language",
-					"required"    	=> false,
-					'label' => 'person.preferredLanguage',
-					"multiple" 		=> false,
-					"expanded" 		=> false,
-    				"choices" 		=> array("Java", "C", "C++", "Python", "C#", "PHP")))
-			->add("englishLevel", "choice", array(
-					'label' => 'person.englishLevel',
-					//"required"    	=> false,
-					"data"			=> 1,
-					"multiple" 		=> false,
-					"expanded" 		=> true,
-    				"choices" 		=> array("A1" => 1, "A2" => 2, "B1" => 3, "B2" => 4, "C1" => 5, "C2" => 6),
-    				"choices_as_values" => true))
-			->add("personalWebSite", "url", array(
-					'label' => 'person.personalWebSite',
-					//"placeholder" 	=> "http://www.example.com",
-					"required"    	=> false))
-			->add("cardNumber", "text", array(
-					'label' => 'person.cardNumber',
-					//"placeholder" 	=> "5555555555554444",
-					"required"    	=> false))
-			->add("IBAN", "text", array(
-					'label' => 'person.iban',
-					//"placeholder" 	=> "ES9121000418450200051332",
-					"required"    	=> false))
-			->add('save', 'submit', array('label' => 'action.save'))
-    		->add('saveAndAdd', 'submit', array('label' => 'action.saveAndAdd'))
 
-			->getForm();
-	
-		$form->handleRequest($request);
-	
-		if ($request->isMethod("POST") && $form->isValid()) {
-			
-			$this->addAction($person);
-			
-			$continueAction = $form->get('saveAndAdd')->isClicked();
-			
-			if($continueAction){
-				/*
-				$text = $this->get('translator')->trans("Person %personname% with Id %personid% added",
-				array('%personname%' => $person->getName(), '%personid%' => $person->getId()));
-				*/
-				return $this->render("DWSBundle:Person:new.html.twig", array(
-						"form" => $form->createView(),"person" => $person,"flashpersonadd" => true,
-				));
-			}
+        $this->addAction($person);
 
-			//return new Response("Person ".$person->getName()." with Id ". $person->getId()." added");
-				/*
-				$text = $this->get('translator')->trans("Person %personname% with Id %personid% added",
-				array('%personname%' => $person->getName(), '%personid%' => $person->getId()));
-				return $this->render("DWSBundle::index.html.twig", array("text" => $text, "success" => true));
-				*/
-				$persons = $this->searchAllAction();
-			
-				return $this->render("DWSBundle:Person:list.html.twig", array("person" => $person,"flashpersonadd" => true,
-				"persons" => $persons,
-				));
-		}
-	
-		return $this->render("DWSBundle:Person:new.html.twig", array(
-				"form" => $form->createView()
-		));
-	}
-	
-	private function addAction($person) {
-	
-		$em = $this->getDoctrine()->getManager();
-		$em->persist($person);
-		$em->flush();
-	}
-	
-	private function removeAction($person) {
-	
-		$em = $this->getDoctrine()->getManager();
-		$em->remove($person);
-		$em->flush();
-	}
-	
-	private function searchByIdAction($id) {
-	
-    	return $this->getDoctrine()
-	    	->getRepository("DWSBundle:Person")
-	    	->find($id);
-	}
-	
-	private function searchAllAction() {
-	
-		$repository = $this->getDoctrine()
-			->getRepository("DWSBundle:Person");
-		
-		return $repository->findAll();
-	}
+        $persons = $this->searchAllAction();
+        return $this->render("DWSBundle:Person:list.html.twig", array("person" => $person,
+                    "flashpersonadd" => true,
+                    "persons" => $persons));
+    }
+    
+    /**
+     * @Security("has_role('ROLE_APP_ADMIN'||'ROLE_USER')")
+     */
+    public function listAction() {
+        $persons = $this->searchAllAction();
+
+        if (count($persons) === 0) {
+
+            return $this->render("DWSBundle::index.html.twig", array("flashnopersons" => true));
+        }
+
+        return $this->render("DWSBundle:Person:list.html.twig", array("persons" => $persons
+        ));
+    }
+    
+    /**
+     * @Security("has_role('ROLE_APP_ADMIN')")
+     */
+    public function deleteAction($id) {
+        $person = $this->searchByIdAction($id);
+
+        if (!$person) {
+
+            return $this->render("DWSBundle::index.html.twig", array("flashnopersonid" => true,
+                        "id" => $id));
+        }
+
+        $this->removeAction($person);
+
+        $persons = $this->searchAllAction();
+        return $this->render("DWSBundle:Person:list.html.twig", array("person" => $person,
+                    "flashpersonremove" => true,
+                    "persons" => $persons));
+    }
+
+    /**
+     * @Security("has_role('ROLE_APP_ADMIN'||'ROLE_USER')")
+     */
+    public function showAction($id) {
+        $person = $this->searchByIdAction($id);
+        if (!$person) {
+
+            return $this->render("DWSBundle::index.html.twig", array("flashnopersonid" => true,
+                        "id" => $id));
+        }
+
+
+        return $this->render("DWSBundle:Person:show.html.twig", array("person" => $person));
+    }
+
+    /**
+     * @Security("has_role('ROLE_APP_ADMIN')")
+     */
+    public function newAction(Request $request) {
+
+        $person = new Person();
+
+        $form = $this->createFormBuilder($person, ['translation_domain' => 'DWSBundle'])
+                ->add("name", "text", array(
+                    //"placeholder" 	=> "John Smith",
+                    'label' => 'person.name',
+                    "required" => true,
+                    "empty_data" => null))
+                ->add("age", "integer", array(
+                    //"placeholder" 	=> 27,
+                    //"data"			=> 18,
+                    'label' => 'person.age',
+                    "required" => false))
+                ->add("birthDate", "date", array(
+                    //"placeholder" 	=> array("year" => "1988", "month" => "05", "day" => "27"),
+                    "format" => "yyyy-MM-dd",
+                    'label' => 'person.birthDate',
+                    "required" => true,
+                    "empty_data" => null))
+                ->add("height", "integer", array(
+                    //"placeholder" 	=> 178,
+                    'label' => 'person.height',
+                    "required" => false))
+                ->add("email", "email", array(
+                    //"placeholder" 	=> "example@domain.com",
+                    'label' => 'person.email',
+                    "required" => true,
+                    "empty_data" => null))
+                ->add("phone", "number", array(
+                    //"placeholder" 	=> 654123123,
+                    'label' => 'person.phone',
+                    "required" => true,
+                    "empty_data" => null))
+                ->add("gender", "choice", array(
+                    //"placeholder" 	=> "Femenino",
+                    'label' => 'person.gender',
+                    "required" => true,
+                    "choices" => array("form.ch.female" => "f", "form.ch.male" => "m"),
+                    "choices_as_values" => true,
+                    "empty_data" => null))
+                ->add("descends", "number", array(
+                    'label' => 'person.descends',
+                    //"placeholder" 	=> 2,
+                    "scale" => 0,
+                    "required" => false))
+                ->add("vehicle", "checkbox", array(
+                    'label' => 'person.vehicle',
+                    "required" => false))
+                ->add("preferredLanguage", "choice", array(
+                    //"placeholder" 	=> "Programming Language",
+                    "required" => false,
+                    'label' => 'person.preferredLanguage',
+                    "multiple" => false,
+                    "expanded" => false,
+                    "choices" => array("Java", "C", "C++", "Python", "C#", "PHP")))
+                ->add("englishLevel", "choice", array(
+                    'label' => 'person.englishLevel',
+                    //"required"    	=> false,
+                    "data" => 1,
+                    "multiple" => false,
+                    "expanded" => true,
+                    "choices" => array("A1" => 1, "A2" => 2, "B1" => 3, "B2" => 4, "C1" => 5, "C2" => 6),
+                    "choices_as_values" => true))
+                ->add("personalWebSite", "url", array(
+                    'label' => 'person.personalWebSite',
+                    //"placeholder" 	=> "http://www.example.com",
+                    "required" => false))
+                ->add("cardNumber", "text", array(
+                    'label' => 'person.cardNumber',
+                    //"placeholder" 	=> "5555555555554444",
+                    "required" => false))
+                ->add("IBAN", "text", array(
+                    'label' => 'person.iban',
+                    //"placeholder" 	=> "ES9121000418450200051332",
+                    "required" => false))
+                ->add('save', 'submit', array('label' => 'action.save'))
+                ->add('saveAndAdd', 'submit', array('label' => 'action.saveAndAdd'))
+                ->getForm();
+
+        $form->handleRequest($request);
+
+        if ($request->isMethod("POST") && $form->isValid()) {
+
+            $this->addAction($person);
+
+            $continueAction = $form->get('saveAndAdd')->isClicked();
+
+            if ($continueAction) {
+
+                return $this->render("DWSBundle:Person:new.html.twig", array(
+                            "form" => $form->createView(), "person" => $person, "flashpersonadd" => true,
+                ));
+            }
+
+            $persons = $this->searchAllAction();
+
+            return $this->render("DWSBundle:Person:list.html.twig", array("person" => $person, "flashpersonadd" => true,
+                        "persons" => $persons,
+            ));
+        }
+
+        return $this->render("DWSBundle:Person:new.html.twig", array(
+                    "form" => $form->createView()
+        ));
+    }
+
+    /**
+     * @Security("has_role('ROLE_APP_ADMIN')")
+     */
+    public function editAction($id,Request $request) {
+
+        $person = $this->searchByIdAction($id);
+
+        $form = $this->createFormBuilder($person, ['translation_domain' => 'DWSBundle'])
+                ->add("name", "text", array(
+                    //"placeholder" 	=> "John Smith",
+                    'label' => 'person.name',
+                    "required" => true,
+                    "empty_data" => null,
+                    "data" => $person->getName()))
+                ->add("age", "integer", array(
+                    //"placeholder" 	=> 27,
+                    //"data"			=> 18,
+                    'label' => 'person.age',
+                    "required" => false,
+                    "data" => $person->getAge()))
+                ->add("birthDate", "date", array(
+                    //"placeholder" 	=> array("year" => "1988", "month" => "05", "day" => "27"),
+                    "format" => "yyyy-MM-dd",
+                    'label' => 'person.birthDate',
+                    "required" => true,
+                    "empty_data" => null,
+                    "data" => $person->getBirthDate()))
+                ->add("height", "integer", array(
+                    //"placeholder" 	=> 178,
+                    'label' => 'person.height',
+                    "required" => false,
+                    "data" => $person->getHeight()))
+                ->add("email", "email", array(
+                    //"placeholder" 	=> "example@domain.com",
+                    'label' => 'person.email',
+                    "required" => true,
+                    "empty_data" => null,
+                    "data" => $person->getEmail()))
+                ->add("phone", "number", array(
+                    //"placeholder" 	=> 654123123,
+                    'label' => 'person.phone',
+                    "required" => true,
+                    "empty_data" => null,
+                    "data" => $person->getPhone()))
+                ->add("gender", "choice", array(
+                    //"placeholder" 	=> "Femenino",
+                    'label' => 'person.gender',
+                    "required" => true,
+                    "choices" => array("form.ch.female" => "f", "form.ch.male" => "m"),
+                    "choices_as_values" => true,
+                    "empty_data" => null,
+                    "data" => $person->getGender()))
+                ->add("descends", "number", array(
+                    'label' => 'person.descends',
+                    //"placeholder" 	=> 2,
+                    "scale" => 0,
+                    "required" => false,
+                    "data" => $person->getDescends()))
+                ->add("vehicle", "checkbox", array(
+                    'label' => 'person.vehicle',
+                    "required" => false,
+                    "data" => $person->getVehicle()))
+                ->add("preferredLanguage", "choice", array(
+                    //"placeholder" 	=> "Programming Language",
+                    "required" => false,
+                    'label' => 'person.preferredLanguage',
+                    "multiple" => false,
+                    "expanded" => false,
+                    "choices" => array("Java", "C", "C++", "Python", "C#", "PHP"),
+                    "data" => $person->getPreferredLanguage()))
+                ->add("englishLevel", "choice", array(
+                    'label' => 'person.englishLevel',
+                    //"required"    	=> false,
+                    "data" => 1,
+                    "multiple" => false,
+                    "expanded" => true,
+                    "choices" => array("A1" => 1, "A2" => 2, "B1" => 3, "B2" => 4, "C1" => 5, "C2" => 6),
+                    "choices_as_values" => true,
+                    "data" => $person->getEnglishLevel()))
+                ->add("personalWebSite", "url", array(
+                    'label' => 'person.personalWebSite',
+                    //"placeholder" 	=> "http://www.example.com",
+                    "required" => false,
+                    "data" => $person->getPersonalWebSite()))
+                ->add("cardNumber", "text", array(
+                    'label' => 'person.cardNumber',
+                    //"placeholder" 	=> "5555555555554444",
+                    "required" => false,
+                    "data" => $person->getCardNumber()))
+                ->add("IBAN", "text", array(
+                    'label' => 'person.iban',
+                    //"placeholder" 	=> "ES9121000418450200051332",
+                    "required" => false,
+                    "data" => $person->getIBAN()))
+                ->add('save', 'submit', array('label' => 'action.upload'))
+                ->getForm();
+
+        $form->handleRequest($request);
+
+        if ($request->isMethod("POST") && $form->isValid()) {
+
+            $this->updateAction($person);
+
+            $persons = $this->searchAllAction();
+
+            return $this->render("DWSBundle:Person:list.html.twig", array("person" => $person, "flashpersonupdate" => true,
+                        "persons" => $persons,
+            ));
+        }
+
+        return $this->render("DWSBundle:Person:edit.html.twig", array(
+                    "form" => $form->createView(), "person" => $person,
+        ));
+    }
+
+    private function addAction($person) {
+
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($person);
+        $em->flush();
+    }
+    
+    private function removeAction($person) {
+
+        $em = $this->getDoctrine()->getManager();
+        $em->remove($person);
+        $em->flush();
+    }
+
+    private function searchByIdAction($id) {
+
+        return $this->getDoctrine()
+                        ->getRepository("DWSBundle:Person")
+                        ->find($id);
+    }
+
+    private function searchAllAction() {
+
+        $repository = $this->getDoctrine()
+                ->getRepository("DWSBundle:Person");
+
+        return $repository->findAll();
+    }
+    
+    private function updateAction() {
+
+        $em = $this->getDoctrine()->getManager();
+        $em->flush();
+    }
+
 }

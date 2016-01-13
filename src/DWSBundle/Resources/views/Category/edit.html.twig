@@ -1,6 +1,5 @@
 {% extends 'DWSBundle::layout.html.twig' %}
-{% trans_default_domain 'DWSBundle' %} 
-
+{% trans_default_domain 'DWSBundle' %}
 {% block title %}DWS - {{ 'category.edit.title'|trans({'%categoryname%' : category.name }) }}{% endblock %}
 {% block body %}
     {{ parent() }}

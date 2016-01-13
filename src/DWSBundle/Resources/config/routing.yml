@@ -124,3 +124,10 @@ per_new:
     path:     /person/new
     defaults: { _controller: DWSBundle:Person:new }
     methods:  [GET|POST]
+    
+per_edit:
+    path:     /person/edit/{id}
+    defaults: { _controller: DWSBundle:Person:edit }
+    requirements:
+        id:  \d+  
+    methods:  [GET|POST] 

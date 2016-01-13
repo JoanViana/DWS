@@ -14,6 +14,7 @@ A generic bundle which implements basics of:
   * Security
   * Translation
   * Heroku deploy
+  * Bootstrap front
 
 ## Contributing
 1. Fork it!
