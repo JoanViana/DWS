@@ -1,10 +1,10 @@
 # This file is auto-generated during the composer install
 parameters:
-    database_host: ec2-54-83-52-71.compute-1.amazonaws.com
-    database_port: 5432
-    database_name: db53d8dgcr3d2g
-    database_user: jfwyxqcvfxkpni
-    database_password: vOnJWWNfTvFs468Vn7O9njBZVO
+    database_host: 127.0.0.1
+    database_port: null
+    database_name: c9
+    database_user: joanviana
+    database_password: root
     mailer_transport: smtp
     mailer_host: null
     mailer_user: null
