@@ -1,6 +1,7 @@
 <snippet>
   <content>
 Bundle @DWSBundle for Symfony 2.7
+=================================
 A generic bundle which implements basics of:
 
   * Related Entities
