@@ -74,8 +74,8 @@ user:
         header: 'Confirmación de registro'
         title: 'Confirmación de registro'
     edit:
-        header: 'Editar del perfil'
-        title: 'Editar del perfil de usuario'
+        header: 'Editar el perfil'
+        title: 'Editar el perfil'
     show:
         header: 'Perfil de usuario'
         title: 'Perfil de usuario'

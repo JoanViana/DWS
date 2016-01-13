@@ -27,6 +27,7 @@
                                 <label class="col-md-3 col-md-pull-4" for="username">{{ 'form.email'|trans({}, 'DWSBundle') }}</label>
                                 <input class="col-md-9 col-md-pull-3" type="email" id="username" name="_username" placeholder= {{ 'form.username'|trans({}, 'DWSBundle') }} value="{{ last_username }}" required="required" />
                             </div>
+                            
                             <sup>
                                 <a href="{{ path('fos_user_security_login_username') }}" id="_submitByUsername" />{{ 'link.login.username'|trans({}, 'DWSBundle') }} </a>
                             </sup>
