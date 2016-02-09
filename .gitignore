@@ -2,6 +2,8 @@
 /app/bootstrap.php.cache
 /app/cache/*
 /app/config/parameters.yml
+/app/config/parameters.yml.loc
+/app/config/parameters.yml.her
 /app/logs/*
 !app/cache/.gitkeep
 !app/logs/.gitkeep
