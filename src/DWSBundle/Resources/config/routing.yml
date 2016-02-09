@@ -1,3 +1,10 @@
+dws_redirect_root:
+    path: /
+    defaults:
+        _controller: DWSBundle:Default:index
+        path: /index
+        permanent: true
+        
 index:
     path:     /index
     defaults: { _controller: DWSBundle:Default:index }
